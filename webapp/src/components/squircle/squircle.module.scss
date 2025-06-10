@@ -1,0 +1,20 @@
+.squircle {
+    position: relative;
+    background: var(--squircle-background) !important;
+    --squircle-border: var(--squircle-background);
+
+    &[data-borderwidth=true] {
+        background: var(--squircle-border) !important;
+
+        &::before {
+            content: "";
+            position: absolute;
+            background: var(--squircle-background) !important;
+            inset: var(--squircleBorderWidth);
+            border-top-left-radius: var(--squircleInnerBorderTopLeftRadius);
+            border-top-right-radius: var(--squircleInnerBorderTopRightRadius);
+            border-bottom-left-radius: var(--squircleInnerBorderBottomLeftRadius);
+            border-bottom-right-radius: var(--squircleInnerBorderBottomRightRadius);
+        }
+    }
+}
