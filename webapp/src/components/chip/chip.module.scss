@@ -1,7 +1,7 @@
 .chip {
     width: fit-content;
     height: fit-content;
-    padding: 7.5px 12px;
+    padding: 7px 12px;
     gap: 10px;
     border-radius: 50em;
     font-size: 14px;
@@ -36,7 +36,7 @@
         background: var(--colorTextPrimaryPartial);
 
         &::before {
-            background: var(--colorHighlight6);
+            background: var(--colorHighlight5);
         }
     }
 

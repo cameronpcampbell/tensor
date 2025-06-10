@@ -5,3 +5,5 @@ export { ContainerSecondary } from "./container/containerSecondary/containerSeco
 
 export { Button } from "./button/button"
 export { Chip } from "./chip/chip"
+
+export { Message } from "./message/message"

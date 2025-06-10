@@ -16,12 +16,19 @@
     --colorAccentPrimaryZero: oklab(54.6% 14.25% -63.5% / 0);
 
     --colorHighlight15: linear-gradient(oklab(93% 3.5% -8.5% / .15), oklab(17.4% 1.5% -2.75% / .15));
-    --colorHighlight6: linear-gradient(oklab(93% 3.5% -8.5% / .06), oklab(17.4% 1.5% -2.75% / .06));
+    --colorHighlight5: linear-gradient(oklab(93% 3.5% -8.5% / .05), oklab(17.4% 1.5% -2.75% / .05));
     --colorHighlightZero: linear-gradient(oklab(93% 3.5% -8.5% / 0), oklab(17.4% 1.5% -2.75% / 0));
+
+    --colorRadialHighlight6: radial-gradient(ellipse 100% 98% at center top, oklab(93% 3.5% -8.5% / .06) 0%, oklab(17.4% 1.5% -2.75% / .06) 75%);
 }
 
 .tensorui {
     background-color: var(--colorBgPrimary);
+
+    h1, h2, h3, h4, h5, h6, p, input, button {
+        font-family: Geist;
+        letter-spacing: .1;
+    }
 
     input {
         background-color: transparent;
@@ -37,32 +44,12 @@
 
     h1, h2, h3, h4, h5, h6 {
         color: var(--colorTextPrimaryFull);
+        font-weight: 600;
     }
 
     p {
         color: var(--colorTextSecondaryFull);
-    }
-
-    h1, h2, h3, h4, h5, h6, p {
-        &[data-mode=title] {
-            font-weight: 600;
-            font-size: 0.938rem;
-        }
-
-        &[data-mode=body1] {
-            font-weight: 400;
-            font-size: 1rem;
-        }
-
-        &[data-mode=body2] {
-            font-weight: 400;
-            font-size: 0.875rem;
-        }
-
-        &[data-mode=body3] {
-            font-weight: 400;
-            font-size: 0.813rem;
-        }
+        font-weight: 400;
     }
 
     button,
