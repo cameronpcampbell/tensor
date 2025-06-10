@@ -1,11 +1,11 @@
-import { Chip, ContainerSecondary } from "~/components"
+import { Chip, ContainerSecondary, Button, TextareaAutosize } from "~/components"
 
 import styles from "./sendMessageBox.module.scss"
-import { Button } from "~/components"
+
 
 export const SendMessageBox = () => {
     return <ContainerSecondary className={styles.sendMessageBox} cornerRadius={10}>
-        <input placeholder="Type your message here..." />
+        <TextareaAutosize rows={1} maxRows={10} placeholder="Type your message here..." />
 
         <section className={styles.bottom}>
             <section className={styles.options}>

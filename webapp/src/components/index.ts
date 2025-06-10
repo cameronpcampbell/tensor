@@ -7,3 +7,5 @@ export { Button } from "./button/button"
 export { Chip } from "./chip/chip"
 
 export { Message } from "./message/message"
+
+export { TextareaAutosize } from "./textareaAutosize/textareaAutosize"

@@ -25,7 +25,7 @@
 .tensorui {
     background-color: var(--colorBgPrimary);
 
-    h1, h2, h3, h4, h5, h6, p, input, button {
+    h1, h2, h3, h4, h5, h6, p, input, button, textarea {
         font-family: Geist;
         letter-spacing: .1;
     }
@@ -75,7 +75,7 @@
         box-shadow: none;
     }
 
-    input {
+    input, textarea {
         color: var(--colorTextPrimaryFull);
 
         &::placeholder {

@@ -2,6 +2,7 @@
     position: relative;
     background: var(--squircle-background) !important;
     --squircle-border: var(--squircle-background);
+    z-index: 1;
 
     &[data-borderwidth=true] {
         background: var(--squircle-border) !important;
@@ -15,6 +16,7 @@
             border-top-right-radius: var(--squircleInnerBorderTopRightRadius);
             border-bottom-left-radius: var(--squircleInnerBorderBottomLeftRadius);
             border-bottom-right-radius: var(--squircleInnerBorderBottomRightRadius);
+            z-index: -1;
         }
     }
 }
