@@ -1,0 +1,26 @@
+.conversation {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .sendMessageBoxWrapper {
+        padding: 0px 25px 25px 25px;
+    }
+
+    .gradient {
+        width: 100%;
+
+        aspect-ratio: 1 / .35;
+
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        position: absolute;
+        
+        opacity: 12%;
+
+        background: radial-gradient(ellipse 75% 98% at center bottom, var(--colorAccentPrimaryFull) 0%, var(--colorAccentPrimaryZero) 75%);
+    }
+}

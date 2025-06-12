@@ -4,9 +4,12 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-kalosm = { version = "0.4.0", features = ["language", "metal"] }
+kalosm = { git = "https://github.com/floneum/floneum.git", features = ["language", "metal"] }
 tokio = { version = "1.45.1", features = ["full"] }
-axum = "0.8.4"
+axum = { version = "0.8.4", features = ["macros"] }
 bytes = "1.5"
 tokio-stream = "0.1"
 serde = "1.0.219"
+tower-http = { version = "0.6.6", features = ["cors"] }
+nanoid = "0.4.0"
+guarded = "0.0.2"

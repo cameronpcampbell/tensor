@@ -1,0 +1,21 @@
+.keyPrompt {
+    min-width: fit-content;
+    height: min-content;
+    --squircle-background: var(--colorTextSecondaryPartial);
+    position: relative;
+    display: flex;
+
+    p {
+        font-size: 14px;
+        margin: 2px 6px;
+    }
+
+    .border {
+        background: var(--colorHighlight5);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}

@@ -1,0 +1,41 @@
+.sendMessageBox {
+    width: 100%;
+    height: max-content;
+    padding: 18px;
+    gap: 9px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &:hover {
+        --squircle-border-background: color-mix(in oklab, var(--colorBgQuaternary) calc(100% - 10%), var(--colorTextPrimaryFull) 10%) !important;
+    }
+
+    &:has(textarea:focus) {
+        --squircle-border-background: var(--colorAccentPrimaryFull) !important;
+    }
+
+    :global(.squircleBorder) {
+        transition: background .2s ease-out;
+    }
+
+    & > textarea {
+        font-size: 1rem;
+        padding: 7.5px 12px;
+    }
+
+    .bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .modelOptions, .messageOptions {
+            display: flex;
+            gap: 9px;
+        }
+
+        .messageOptions {
+            flex-direction: row-reverse;
+        }
+    }
+}

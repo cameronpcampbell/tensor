@@ -1,0 +1,13 @@
+.containerSecondary {
+    --squircle-background: var(--colorBgTertiary);
+    --squircle-border-background: var(--colorBgQuaternary);
+
+    background-color: var(--squircle-background);
+
+    .border {
+        position: absolute;
+        inset: 0px;
+        background-color: var(--squircle-border-background);
+        pointer-events: none;
+    }
+}

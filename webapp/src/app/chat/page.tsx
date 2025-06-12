@@ -1,11 +1,5 @@
-import { Conversation } from "./conversation/conversation"
-import { Sidebar } from "./sidebar/sidebar"
-
-import styles from "./chat.module.scss"
+import { Chat } from "~/ui/compositions/chat/chat"
 
 export default () => (
-    <div className={styles.wrapper}>
-        <Sidebar />
-        <Conversation />
-    </div>
+    <Chat />
 )

@@ -1,0 +1,19 @@
+.wrapper {
+    position: relative;
+    min-width: max-content;
+    min-height: max-content;
+
+    .focusVisual {
+        position: absolute;
+        background-color: var(--colorAccentPrimaryFull);
+        opacity: 30%;
+        inset: -3;
+        transition: opacity .2s ease-out, inset .2s ease-out !important;
+        pointer-events: none !important;
+
+        &:not(.enabled) {
+            inset: -7;
+            opacity: 0;
+        }
+    }
+}

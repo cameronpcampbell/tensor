@@ -18,25 +18,21 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@auth/drizzle-adapter": "^1.7.2",
     "@t3-oss/env-nextjs": "^0.12.0",
     "corner-smoothing": "^0.1.5",
-    "drizzle-orm": "^0.41.0",
+    "figma-squircle": "^1.1.0",
+    "micromark": "^4.0.2",
+    "moment": "^2.30.1",
     "next": "^15.2.3",
-    "next-auth": "5.0.0-beta.25",
-    "postgres": "^3.4.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-textarea-autosize": "^8.5.9",
-    "sass": "^1.89.2",
-    "zod": "^3.24.2"
+    "sass": "^1.89.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
     "@types/node": "^20.14.10",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "drizzle-kit": "^0.30.5",
     "typescript": "^5.8.2"
   },
   "ct3aMetadata": {

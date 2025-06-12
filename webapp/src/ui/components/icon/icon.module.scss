@@ -1,0 +1,16 @@
+.icon {
+    aspect-ratio: 1;
+    background-color: var(--colorTextPrimaryFull);
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+
+    &.large {
+        min-width: 18px;
+        margin: 0px -2px;
+    }
+
+    &.small {
+        min-width: 14px;
+    }
+}
