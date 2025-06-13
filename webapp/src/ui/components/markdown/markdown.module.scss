@@ -50,7 +50,7 @@
         padding: 0px 41px;
 
         li {
-            padding-left: 13px;
+            padding-left: 12px;
         }
 
         ul {
@@ -60,7 +60,6 @@
     }
 
     ol {
-        padding: 0px 24px;
         counter-reset: section;
         display: flex;
 
@@ -73,7 +72,7 @@
                 counter-increment: section;
                 content: counter(section) ".";
                 margin-left: 24px;
-                margin-right: 9px;
+                margin-right: 16.5px;
                 min-width: 23px;
             }
         }
