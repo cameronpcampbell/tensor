@@ -15,7 +15,7 @@ export const ChipButton = ({ className, children, icon, dropdown, ...rest }: Chi
    const [ isFocus, setIsFocus ] = useState(false)
    let [ isMouseDown, setIsMouseDown ] = useState(false)
 
-    return <FocusVisual parentCornerRadius={500} isFocus={isMouseDown ? false : isFocus}>
+    return <FocusVisual parentCornerRadius={500} parentCornerSmoothing={0} isFocus={isMouseDown ? false : isFocus}>
         <button
             tabIndex={0}
             className={styles.chipButton}

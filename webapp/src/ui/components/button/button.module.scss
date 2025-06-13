@@ -6,7 +6,6 @@
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
     cursor: pointer;
     transition: background .2s ease-out;
     font-size: 0.875rem;
@@ -68,7 +67,7 @@
     .leftContent {
         display: flex;
         padding: 0px 4px;
-        gap: 10px;
+        gap: 9px;
 
         &.left {
             justify-content: start;

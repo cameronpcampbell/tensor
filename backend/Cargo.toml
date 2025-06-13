@@ -13,3 +13,4 @@ serde = "1.0.219"
 tower-http = { version = "0.6.6", features = ["cors"] }
 nanoid = "0.4.0"
 guarded = "0.0.2"
+oauth-axum = "0.1.4"

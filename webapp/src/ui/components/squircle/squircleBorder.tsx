@@ -64,8 +64,12 @@ const renderSquircleBorder = (element: HTMLElement, options: SquircleBorderOptio
     `
 }
 
+const EPSILON = Number.EPSILON * Math.pow(2, -126); 
+
+const nearlyEqual = (a: number, b: number, epsilon: number = EPSILON) => Math.abs(a - b) < epsilon
+
 const squircleObserver = (element: HTMLElement, options: SquircleBorderOptions) => {
-    let dimensions: [number, number] | undefined = undefined
+    let dimensions: [number, number] = [0,0]
 
     const func = (newOptions?: SquircleBorderOptions) => {
         if (newOptions !== undefined) {
@@ -81,8 +85,8 @@ const squircleObserver = (element: HTMLElement, options: SquircleBorderOptions) 
 
         // Run only if dimensions changed, for performance.
         if (
-            prevDimemsions?.[0] !== dimensions[0] ||
-            prevDimemsions?.[1] !== dimensions[1]
+            !nearlyEqual(prevDimemsions[0], dimensions[0]) ||
+            !nearlyEqual(prevDimemsions[1], dimensions[1])
         ) { func() }
     });
 

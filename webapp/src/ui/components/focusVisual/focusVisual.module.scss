@@ -5,11 +5,18 @@
 
     .focusVisual {
         position: absolute;
-        background-color: var(--colorAccentPrimaryFull);
         opacity: 30%;
         inset: -3;
         transition: opacity .2s ease-out, inset .2s ease-out !important;
         pointer-events: none !important;
+
+        &:not(.noSmoothing) {
+            background-color: var(--colorAccentPrimaryFull);
+        }
+
+        &.noSmoothing {
+            border: 3.1px solid var(--colorAccentPrimaryFull) !important;
+        }
 
         &:not(.enabled) {
             inset: -7;
