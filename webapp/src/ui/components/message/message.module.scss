@@ -1,7 +1,7 @@
 .message {
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 12px;
     position: relative;
     padding: 18px 25px;
 
@@ -43,6 +43,7 @@
         .timestamp {
             display: flex;
             align-items: center;
+            font-size: 0.875rem;
             gap: 9px;
             
             &::before {
@@ -55,10 +56,5 @@
                 background-color: var(--colorTextSecondaryFull);
             }
         }
-    }
-
-    .content {
-        font-size: 1rem;
-        padding: 0px 30px;
     }
 }

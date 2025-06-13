@@ -3,6 +3,7 @@
     z-index: 1;
     overflow: hidden;
     background: var(--squircle-border-background);
+    pointer-events: none;
 
     &.squirclePre {
         padding: var(--border-width);

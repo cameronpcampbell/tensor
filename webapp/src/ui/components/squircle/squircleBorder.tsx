@@ -104,6 +104,7 @@ export const SquircleBorder = <As extends ElementName = "div",>({
     topRightCornerRadius,
     bottomRightCornerRadius,
     bottomLeftCornerRadius,
+    as,
     ...rest
 }: SquircleBorderProps<As>) => {
     const funcRef = useRef<ReturnType<typeof squircleObserver>>(undefined);
@@ -133,8 +134,10 @@ export const SquircleBorder = <As extends ElementName = "div",>({
         }
     }, [])
 
+    let As = (as ?? "div") as string
+
     return <>
-        <div
+        <As
             className={[ styles.squircle, styles.squirclePre, className, "squircleBorder" ].join(" ")}
             style={{
                 ["--corner-radius"]: `${cornerRadius}px`,
@@ -144,6 +147,6 @@ export const SquircleBorder = <As extends ElementName = "div",>({
             ref={refCallback}
             {...rest as any}
         >
-        </div>
+        </As>
     </>
 }

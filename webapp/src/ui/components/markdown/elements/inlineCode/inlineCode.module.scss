@@ -1,0 +1,15 @@
+.inlineCode {
+    position: relative;
+    --squircle-background: var(--colorTextPrimaryPartial);
+    display: inline-flex;
+    padding: 1px 3px;
+    font-family: Geist Mono;
+    font-size: 0.9rem;
+    color: var(--colorTextPrimaryFull);
+
+    .border {
+        position: absolute;
+        inset: 0;
+        background: var(--colorHighlight5);
+    }
+}

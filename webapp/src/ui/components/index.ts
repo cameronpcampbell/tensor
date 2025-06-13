@@ -18,3 +18,5 @@ export { FocusVisual } from "./focusVisual/focusVisual"
 export { Icon } from "./icon/icon"
 
 export { Heading } from "./heading/heading"
+
+export { Markdown } from "./markdown/markdown"

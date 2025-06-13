@@ -2,9 +2,13 @@
     font-size: 13px !important;
     font-weight: 500 !important;
     text-transform: uppercase !important;
-    color: var(--colorTextPrimaryFull) !important;
+    color: var(--colorTextSecondaryFull) !important;
     display: flex;
     align-items: center;
     gap: 10px;
     padding-left: 11px;
+
+    .icon {
+        background-color: var(--colorTextSecondaryFull) !important;
+    }
 }

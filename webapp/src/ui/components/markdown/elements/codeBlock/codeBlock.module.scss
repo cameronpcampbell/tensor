@@ -1,0 +1,46 @@
+.codeBlock {
+    width: calc(100% + 24px);
+    min-height: calc(36px * 2);
+    margin-left: -12px;
+    margin-right: -12px;
+    height: fit-content;
+    --squircle-background: var(--colorTextPrimaryPartial);
+    display: inline-flex;
+    flex-direction: column;
+    font-family: Geist Mono;
+    font-size: 0.938rem;
+    color: var(--colorTextPrimaryFull);
+
+    .border {
+        position: absolute;
+        inset: 0;
+        background: var(--colorHighlight10);
+    }
+
+    .header {
+        width: 100%;
+        height: 36px;
+        background-color: var(--colorTextSecondaryPartial);
+        color: var(--colorTextSecondaryFull);
+        display: flex;
+        align-items: center;
+        padding-left: 12px;
+        font-size: 0.813rem;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+
+    .highlightedCode > pre {
+        background-color: transparent !important;
+        margin: 12px;
+
+        * {
+            font-family: Geist Mono;
+            font-size: 0.938rem !important;
+        }
+    }
+
+    .unhighlightedCode {
+        padding: 12px;
+    }
+}

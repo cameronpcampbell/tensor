@@ -9,7 +9,7 @@ interface HeadingChildren extends ElementProps<"h3"> {
 
 export const Heading = ({ children, icon, className }: HeadingChildren) => {
     return <h3 className={[ styles.heading, className ].join(" ")}>
-        <Icon image={icon} size="small" />
+        <Icon image={icon} className={styles.icon} size="small" />
         {children}
     </h3>
 }

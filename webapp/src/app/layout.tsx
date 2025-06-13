@@ -1,9 +1,8 @@
 import { type Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 
 import "~/app/globals.scss";
 import "~/ui/components/base.scss";
-import { Providers } from "./providers";
 
 export const metadata: Metadata = {
     title: "Create T3 App",
@@ -15,14 +14,16 @@ const geist = Geist({
     subsets: ["latin"],
 });
 
+const geistMono = Geist_Mono({
+    subsets: ["latin"],
+});
+
 export default function RootLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <Providers>
-            <html lang="en" className="tensorui dark">
-                <body className={geist.className}>{children}</body>
-            </html>
-        </Providers>
+        <html lang="en" className="tensorui dark">
+            <body className={[geist.className, geistMono.className].join(" ")}>{children}</body>
+        </html>
     );
 }

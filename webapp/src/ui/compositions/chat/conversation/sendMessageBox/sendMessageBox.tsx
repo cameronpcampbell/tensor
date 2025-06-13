@@ -3,15 +3,14 @@
 import { ChipButton, ContainerSecondary, Button, TextareaAutosize, FocusVisual, Icon } from "~/ui/components"
 
 import styles from "./sendMessageBox.module.scss"
-import { useRef, useState, use } from "react"
-import { KeysDownContext } from "~/utils/keysDown"
+import { useMemo, useRef, useState } from "react"
 
 
 interface SendMessageBoxProps {
     disabled?: boolean,
     onMsgSend?: (msgContent: string) => void,
-    abortController: AbortController,
-    setAbortController: (newAbortController: AbortController) => void
+    abortController?: AbortController,
+    setAbortController?: (newAbortController: AbortController) => void
 }
 
 export const SendMessageBox = ({ disabled, onMsgSend, abortController, setAbortController }: SendMessageBoxProps) => {
@@ -23,9 +22,10 @@ export const SendMessageBox = ({ disabled, onMsgSend, abortController, setAbortC
     const [ shiftPressing, setShiftPressing ] = useState(false)
 
     const sendMsg = () => {
-        if (textareaContent.length == 0) return
+        let trimmedTextareaContent = textareaContent.trim()
+        if (trimmedTextareaContent.length == 0) return
 
-        (onMsgSend as (msgContent: string) => void)(textareaContent)
+        (onMsgSend as (msgContent: string) => void)(trimmedTextareaContent)
 
         setTextareaContent("")
         textareaRef.current.value = ""
@@ -38,20 +38,26 @@ export const SendMessageBox = ({ disabled, onMsgSend, abortController, setAbortC
                     rows={1} maxRows={10}
                     placeholder="Type your message here..."
                     ref={textareaRef as any}
-                    onChange={e => setTextareaContent(e.target.value.trim())}
+                    onChange={e => setTextareaContent(e.target.value)}
                     onKeyDown={onMsgSend && ((e) => {
                         let key = e.key
+
                         if (key === "Enter" && !shiftPressing) {
                             e.preventDefault()
                             if (!disabled) sendMsg()    
-
-                        } else if (key === "Shift") {
+                            return
+                        }
+                        
+                        if (key === "Shift") {
                             setShiftPressing(true)
                         }
                     })}
                     onKeyUp={({ key }) => key === "Shift" && setShiftPressing(false)}
                     onFocus={() => setIsFocus(true)}
-                    onBlur={() => setIsFocus(false)}
+                    onBlur={() => {
+                        setIsFocus(false)
+                        setShiftPressing(false)
+                    }}
                 />
 
                 <section className={styles.bottom}>
@@ -63,11 +69,11 @@ export const SendMessageBox = ({ disabled, onMsgSend, abortController, setAbortC
                     <section className={styles.messageOptions}>
                         <Button
                             variant="primary"
-                            aria-disabled={textareaContent.length === 0 && !disabled}
+                            aria-disabled={textareaContent.trim().length === 0 && !disabled}
                             onClick={onMsgSend && (() => {
                                 if (!disabled) { sendMsg() } else {
-                                    abortController.abort()
-                                    setAbortController(new AbortController())
+                                    abortController?.abort()
+                                    setAbortController && setAbortController(new AbortController())
                                 }
                             })}
                         >

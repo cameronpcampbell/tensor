@@ -1,0 +1,81 @@
+.markdown {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    width: 100%;
+    font-weight: 400;
+    font-family: Geist;
+    padding: 0px 30px;
+
+    p {
+        font-size: 1rem;
+        font-weight: 400;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 600;
+        margin-top: 10px;
+
+        strong {
+            font-weight: 700;
+        }
+    }
+
+    strong {
+        font-weight: 450;
+    }
+
+    pre {
+        display: flex;
+        margin: 5px 0px;
+    }
+
+    ul, ol {
+        display: flex;
+        flex-direction: column;
+        gap: 7.5px;
+        margin-bottom: 9px;
+
+        li {
+            word-wrap: break-word;
+            width: fit-content;
+
+            h1, h2, h3, h4, h5, h6 {
+                margin: 0 !important;
+            }
+        }
+    }
+
+    ul {
+        padding: 0px 41px;
+
+        li {
+            padding-left: 13px;
+        }
+
+        ul {
+            margin-top: 9px;
+            margin-bottom: -5px;
+        }
+    }
+
+    ol {
+        padding: 0px 24px;
+        counter-reset: section;
+        display: flex;
+
+        li {
+            max-height: min-content !important;
+            display: inline;
+            list-style: none;
+
+            &::before {
+                counter-increment: section;
+                content: counter(section) ".";
+                margin-left: 24px;
+                margin-right: 9px;
+                min-width: 23px;
+            }
+        }
+    }
+}
