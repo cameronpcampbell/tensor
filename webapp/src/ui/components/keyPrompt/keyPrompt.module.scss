@@ -3,11 +3,11 @@
     height: min-content;
     --squircle-background: var(--colorTextSecondaryPartial);
     position: relative;
-    display: flex;
 
     p {
-        font-size: 0.875rem;
-        margin: 2px 6px;
+        font-size: 0.875rem !important;
+        height: 22px;
+        padding: 1px 6px;
     }
 
     .border {
