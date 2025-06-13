@@ -1,7 +1,7 @@
 .markdown {
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 12px;
     width: 100%;
     font-weight: 400;
     font-family: Geist;
@@ -27,14 +27,14 @@
 
     pre {
         display: flex;
-        margin: 5px 0px;
+        margin: 12px 0px;
     }
 
     ul, ol {
         display: flex;
         flex-direction: column;
-        gap: 7.5px;
-        margin-bottom: 9px;
+        gap: 8px;
+        margin-bottom: 12px;
 
         li {
             word-wrap: break-word;

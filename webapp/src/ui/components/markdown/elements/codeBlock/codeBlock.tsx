@@ -7,7 +7,7 @@ import styles from "./codeBlock.module.scss"
 
 const highlighter = await createHighlighter({
     themes: ["github-dark-default"],
-    langs: ["ts", "js", "css", "lua", "luau", "jsx"],
+    langs: ["ts", "js", "css", "lua", "luau", "jsx", "toml", "json"],
     langAlias: {
         "luau": "lua"
     }
