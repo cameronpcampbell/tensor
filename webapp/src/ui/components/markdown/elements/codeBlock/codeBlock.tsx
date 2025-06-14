@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { codeToHtml, createHighlighter } from 'shiki'
 
-import { Squircle, SquircleBorder } from "@/ui/components"
+import { Squircle } from "@/ui/components"
 
 import styles from "./codeBlock.module.scss"
 
@@ -27,7 +27,7 @@ export const CodeBlock = ({
             })
 
             return <Squircle cornerRadius={8} className={[ className, styles.codeBlock ].join(" ")} as="code">
-                <SquircleBorder className={styles.border} cornerRadius={8} as="code" />
+                <Squircle className={styles.border} cornerRadius={8} as="code" />
                 <header className={styles.header}>{lang ?? "plaintext"}</header>
 
                 <span className={styles.highlightedCode} dangerouslySetInnerHTML={{ __html: code }} />
@@ -36,7 +36,7 @@ export const CodeBlock = ({
     }
 
     return <Squircle cornerRadius={8} className={[ className, styles.codeBlock ].join(" ")} as="code">
-        <SquircleBorder className={styles.border} cornerRadius={8} as="code" />
+        <Squircle className={styles.border} cornerRadius={8} as="code" />
         <header className={styles.header}>{lang ?? "plaintext"}</header>
         
         <span className={styles.unhighlightedCode}>{children}</span>

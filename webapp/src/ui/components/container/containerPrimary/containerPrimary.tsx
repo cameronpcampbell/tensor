@@ -1,8 +1,7 @@
 "use client"
 
 import type { ElementName } from "@/utils/types"
-
-import { Squircle, type SquircleProps } from '../../squircle/squircle'
+import { Squircle, type SquircleProps } from '@/ui/components'
 
 import styles from "./containerPrimary.module.scss"
 

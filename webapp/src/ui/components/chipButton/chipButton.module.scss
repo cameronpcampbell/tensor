@@ -5,8 +5,8 @@
     gap: 10px;
     border-radius: 50em;
     font-size: 0.875rem;
-    background-color: var(--colorTextPrimaryZero);
-    color: var(--colorTextPrimaryFull);
+    background-color: var(--color-text-primary-zero);
+    color: var(--color-text-primary-full);
     position: relative;
     display: flex;
     gap: 9px;
@@ -21,7 +21,7 @@
         width: 14px;
         height: 14px;
         mask-size: 100% 100%;
-        background-color: var(--colorTextPrimaryFull);
+        background-color: var(--color-text-primary-full);
     }
 
     .dropdown {
@@ -29,19 +29,19 @@
         height: 7px;
         mask-image: url("/icons/downArrow.svg");
         mask-size: 100% 100%;
-        background-color: var(--colorTextPrimaryFull);
+        background-color: var(--color-text-primary-full);
     }
 
     &:hover {
-        background: var(--colorTextPrimaryPartial);
+        background: var(--color-text-primary-partial);
 
         &::before {
-            background: var(--colorHighlight5);
+            background: var(--color-highlight5);
         }
     }
 
     &:active {
-        background: color-mix(in oklab, var(--colorTextPrimaryPartial) calc(100% - 10%), var(--colorBgPrimary) 10%);
+        background: color-mix(in oklab, var(--color-text-primary-partial) calc(100% - 10%), var(--color-bg-primary) 10%);
     }
 
     &::before {
@@ -50,7 +50,7 @@
         position: absolute;
         border-radius: 500px;
         padding: 1px;
-        background: var(--colorHighlightZero);
+        background: var(--color-highlight-zero);
         -webkit-mask: 
             linear-gradient(#fff 0 0) content-box, 
             linear-gradient(#fff 0 0);

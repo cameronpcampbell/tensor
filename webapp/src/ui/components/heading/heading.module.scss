@@ -2,13 +2,13 @@
     font-size: 13px !important;
     font-weight: 500 !important;
     text-transform: uppercase !important;
-    color: var(--colorTextSecondaryFull) !important;
+    color: var(--color-text-secondary-full) !important;
     display: flex;
     align-items: center;
     gap: 10px;
     padding-left: 11px;
 
     .icon {
-        background-color: var(--colorTextSecondaryFull) !important;
+        background-color: var(--color-text-secondary-full) !important;
     }
 }

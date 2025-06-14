@@ -1,21 +1,13 @@
 .keyPrompt {
     min-width: fit-content;
     height: min-content;
-    --squircle-background: var(--colorTextSecondaryPartial);
+    --squircle-background: var(--color-text-secondary-partial);
+    --squircle-border-background: var(--color-highlight5);
     position: relative;
 
     p {
         font-size: 0.875rem !important;
         height: 22px;
         padding: 1px 6px;
-    }
-
-    .border {
-        background: var(--colorHighlight5);
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
     }
 }

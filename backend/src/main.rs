@@ -53,6 +53,10 @@ async fn main() {
     let cli = Cli::parse();
 
     match cli.command {
+        Commands::Backend { config } => {
+            start().await
+        }
+
         Commands::Dev { config } => {
             tokio::spawn(async move {
                 let _ = tokio::process::Command::new("sh")
@@ -115,6 +119,11 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
+    Backend {
+        #[arg(short, long)]
+        config: Option<PathBuf>,
+    },
+
     Dev {
         #[arg(short, long)]
         config: Option<PathBuf>,

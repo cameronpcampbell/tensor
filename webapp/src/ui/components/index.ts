@@ -1,5 +1,4 @@
-export { Squircle } from "./squircle/squircle"
-export { SquircleBorder } from "./squircle/squircleBorder"
+export { Squircle, type SquircleProps, type CornerSmoothingProps } from "./squircle/squircle"
 
 export { ContainerPrimary } from "./container/containerPrimary/containerPrimary"
 export { ContainerSecondary } from "./container/containerSecondary/containerSecondary"

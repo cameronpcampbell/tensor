@@ -11,11 +11,11 @@
         pointer-events: none !important;
 
         &:not(.noSmoothing) {
-            background-color: var(--colorAccentPrimaryFull);
+            --squircle-border-background: var(--color-accent-primary-full);
         }
 
         &.noSmoothing {
-            border: 3.1px solid var(--colorAccentPrimaryFull) !important;
+            border: 3.1px solid var(--color-accent-primary-full) !important;
         }
 
         &:not(.enabled) {

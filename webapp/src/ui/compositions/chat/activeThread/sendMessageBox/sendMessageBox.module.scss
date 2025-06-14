@@ -8,14 +8,14 @@
     justify-content: space-between;
 
     &:hover {
-        --squircle-border-background: color-mix(in oklab, var(--colorBgQuaternary) calc(100% - 10%), var(--colorTextPrimaryFull) 10%) !important;
+        --squircle-border-background: color-mix(in oklab, var(--color-bg-quaternary) calc(100% - 10%), var(--color-text-primary-full) 10%) !important;
     }
 
     &:has(textarea:focus) {
-        --squircle-border-background: var(--colorAccentPrimaryFull) !important;
+        --squircle-border-background: var(--color-accent-primary-full) !important;
     }
 
-    :global(.squircleBorder) {
+    &::before {
         transition: background .2s ease-out;
     }
 

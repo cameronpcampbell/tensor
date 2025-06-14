@@ -2,6 +2,7 @@
     width: fit-content;
     height: 36px;
     --squircle-background: var(--background);
+    --squircle-border-background: var(--border-background, var(--color-highlight15));
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -9,27 +10,32 @@
     cursor: pointer;
     transition: background .2s ease-out;
     font-size: 0.875rem;
-    color: var(--colorTextPrimaryFull);
+    color: var(--color-text-primary-full);
     padding: 0px 7px;
+
+     &::before {
+        opacity: var(--border-opacity, 1);
+        transition: opacity .2s ease-out;
+    }
 
     &.fill {
         width: 100%;
     }
 
     &.primary {
-        --background: var(--colorAccentPrimaryFull);
-        --background-hover: color-mix(in oklab, var(--colorAccentPrimaryFull) calc(100% - 10%), var(--colorTextPrimaryFull) 10%);
-        --background-active: color-mix(in oklab, var(--colorAccentPrimaryFull) calc(100% - 10%), var(--colorBgPrimary) 10%);
+        --background: var(--color-accent-primary-full);
+        --background-hover: color-mix(in oklab, var(--color-accent-primary-full) calc(100% - 10%), var(--color-text-primary-full) 10%);
+        --background-active: color-mix(in oklab, var(--color-accent-primary-full) calc(100% - 10%), var(--color-bg-primary) 10%);
     }
 
     &.ghost {
         --background: transparent;
-        --background-hover: var(--colorTextPrimaryPartial);
-        --background-active: color-mix(in oklab, var(--colorTextPrimaryPartial) calc(100% - 10%), var(--colorBgPrimary) 10%);
+        --background-hover: var(--color-text-primary-partial);
+        --background-active: color-mix(in oklab, var(--color-text-primary-partial) calc(100% - 10%), var(--color-bg-primary) 10%);
         
-        --highlight-background: var(--colorHighlight5);
-        --highlight-opacity: 0;
-        --highlight-opacity-hover-active: 1;
+        --border-background: var(--color-highlight5);
+        --border-opacity: 0;
+        --border-opacity-hover-active: 1;
     }
 
     &[aria-disabled=true], &:disabled {
@@ -42,30 +48,21 @@
     &:hover {
         --squircle-background: var(--background-hover);
         
-        .highlight {
-            opacity: var(--highlight-opacity-hover-active) !important;
+        &::before {
+            opacity: var(--border-opacity-hover-active) !important;
         }
     }
 
     &:active {
         --squircle-background: var(--background-active);
 
-        .highlight {
-            opacity: var(--highlight-opacity-hover-active) !important;
+        &::before {
+            opacity: var(--border-opacity-hover-active) !important;
         }
     }
 
-    .highlight {
-        z-index: -1;
-        position: absolute;
-        inset: 0;
-        --squircle-border-background: var(--highlight-background, var(--colorHighlight15));
-        opacity: var(--highlight-opacity, 1);
-        transition: opacity .2s ease-out;
-    }
-
     .leftContent {
-        display: flex;
+        display: inline-flex;
         padding: 0px 4px;
         gap: 9px;
 

@@ -1,25 +1,47 @@
 .squircle {
     position: relative;
-    background: var(--squircle-background) !important;
-    --squircle-border-background: var(--squircle-background);
     z-index: 1;
     overflow: hidden;
+    background: var(--squircle-background) !important;
 
-    &[data-borderwidth=true] {
-        background: var(--squircle-border-background) !important;
+    &::before {
+        content: "";
+        position: absolute;
+        background: var(--squircle-border-background, var(--squircle-background));
+        overflow: hidden;
+        inset: 0px;
+    }
+
+    &.squirclePre {
+        border-radius: var(--squircle-corner-radius);
+
+        &::before {
+            padding: var(--squircle-border-width);
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            border-top-left-radius: var(--squircle-inner-border-top-left-radius);
+            border-top-right-radius: var(--squircle-inner-border-top-right-radius);
+            border-bottom-left-radius: var(--squircle-inner-border-bottom-left-radius);
+            border-bottom-right-radius: var(--squircle-inner-border-bottom-right-radius);
+        }
+    }
+
+    &.squirclePost {
+        mask-size: 100%;
+        mask-repeat: no-repeat;
+        mask-composite: exclude;
 
         &::before {
             content: "";
             position: absolute;
-            display: block;
-            overflow: hidden;
-            background: var(--squircle-background) !important;
-            inset: var(--squircleBorderWidth);
-            border-top-left-radius: var(--squircleInnerBorderTopLeftRadius);
-            border-top-right-radius: var(--squircleInnerBorderTopRightRadius);
-            border-bottom-left-radius: var(--squircleInnerBorderBottomLeftRadius);
-            border-bottom-right-radius: var(--squircleInnerBorderBottomRightRadius);
-            z-index: -1;
+            mask-image: var(--outer-squircle-mask-image), var(--inner-squircle-mask-image) !important;
+            mask-size: 100%;
+            mask-repeat: no-repeat;
+            mask-composite: exclude;
+            pointer-events: none;
         }
     }
 }

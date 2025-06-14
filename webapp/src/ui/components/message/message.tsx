@@ -32,7 +32,10 @@ export const Message = ({ author: { name, avatar }, timestamp, children, highlig
     return (
         <section data-highlighted={highlighted} className={styles.message} {...rest as any}>
             <span className={styles.author}>
-                <img src={avatar ? avatar : "transparent.png"} className={styles.authorAvatar} />
+                {avatar
+                    ? <img src={avatar} className={styles.authorAvatar} />
+                    : <div className={styles.authorAvatar} />
+                }
                 <h4 className={styles.authorName}>{name ?? "LoremIpsum"}</h4>
                 <p className={styles.timestamp}>{formatTimestamp(timestamp)}</p>
             </span>

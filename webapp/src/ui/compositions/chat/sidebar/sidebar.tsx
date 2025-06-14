@@ -17,7 +17,7 @@ export const Sidebar = () => {
             <section className={styles.threadControls}>
                 <TextInput placeholder="Filter Threads" icon="icons/search.svg" keyPrompt="⌘K" />
 
-                <Button variant="ghost" fill align="left" keyPrompt="⌘C">
+                <Button variant="ghost" fill align="left" keyPrompt="⌘J">
                     <Icon image="icons/plus.svg" size="small" />
                     Create Thread
                 </Button>

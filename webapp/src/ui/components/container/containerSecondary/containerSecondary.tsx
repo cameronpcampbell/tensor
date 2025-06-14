@@ -2,8 +2,7 @@
 
 import type { ElementName } from "@/utils/types"
 
-import { Squircle, type SquircleProps } from '../../squircle/squircle'
-import { SquircleBorder } from '../../squircle/squircleBorder'
+import { Squircle, type SquircleProps } from '@/ui/components'
 
 import styles from "./containerSecondary.module.scss"
 
@@ -13,7 +12,6 @@ export const ContainerSecondary = <As extends ElementName,>({ className, cornerR
         cornerRadius={cornerRadius}
         {...rest as any}
     >
-        <SquircleBorder cornerRadius={cornerRadius} className={styles.border} />
         {children}
     </Squircle>
 }

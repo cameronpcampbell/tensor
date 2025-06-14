@@ -2,10 +2,9 @@
 
 import type { ElementProps } from "@/utils/types"
 
-import { Squircle, type CornerSmoothingProps } from "../squircle/squircle"
+import { Squircle, type CornerSmoothingProps } from "@/ui/components"
 
 import styles from "./button.module.scss"
-import { SquircleBorder } from "../squircle/squircleBorder"
 import { FocusVisual } from "../focusVisual/focusVisual"
 import { useState } from "react"
 import { KeyPrompt } from "../keyPrompt/keyPrompt"
@@ -28,6 +27,7 @@ export const Button = ({
             <Squircle
                 tabIndex={0}
                 cornerRadius={8}
+                borderWidth={1}
                 as="button"
                 className={[ styles.button, styles[variant], fill && styles.fill, styles[align], className ].join(" ")}
                 onFocus={() => setIsFocus(true)}
@@ -39,11 +39,9 @@ export const Button = ({
                 }}
                 {...rest}
             >
-                <SquircleBorder cornerRadius={cornerRadius} className={styles.highlight} />
-
                 <section className={styles.leftContent}>{ children }</section>
 
-                {keyPrompt && <KeyPrompt className={styles.keyPrompt}>{keyPrompt}</KeyPrompt>}
+                {keyPrompt && <KeyPrompt>{keyPrompt}</KeyPrompt>}
             </Squircle>
         </FocusVisual>
     )

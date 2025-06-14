@@ -30,7 +30,7 @@
                 width: calc(100% + 40px);
                 transform: translateX(-20px);
                 height: 1px;
-                background-color: var(--colorBgSecondary);
+                background-color: var(--color-bg-secondary);
             }
 
             .items {
@@ -52,7 +52,7 @@
             width: calc(100% + 40px);
             transform: translate(-20px, -20px);
             height: 1px;
-            background-color: var(--colorBgSecondary);
+            background-color: var(--color-bg-secondary);
         }
     }
 }

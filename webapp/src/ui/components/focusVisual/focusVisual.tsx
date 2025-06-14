@@ -2,7 +2,7 @@
 
 import { type ReactElement } from "react"
 
-import { SquircleBorder } from "../squircle/squircleBorder"
+import { Squircle } from "@/ui/components"
 import type { ElementProps } from "@/utils/types"
 
 import styles from "./focusVisual.module.scss"
@@ -19,7 +19,7 @@ export const FocusVisual = ({
 }: FocusVisualProps) => {
     if (parentCornerSmoothing !== 0) {
         return <div className={styles.wrapper}>
-            <SquircleBorder
+            <Squircle
                 className={[ styles.focusVisual, isFocus && styles.enabled ].join(" ")}
                 cornerRadius={parentCornerRadius + 3}
                 borderWidth={3.1}
