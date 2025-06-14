@@ -42,8 +42,6 @@ pub async fn initialize_threads() {
             threads.insert(thread_id, LLAMA_MODEL_CHAT.get().unwrap().chat());
 
             let _ = THREADS.set(Mutex::new(threads));
-
-            summary("I need help with useEffect in react!").await
         })
     );
 }

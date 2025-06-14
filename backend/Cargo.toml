@@ -20,3 +20,4 @@ clap = { version = "4.5.39", features = ["derive", "cargo"] }
 sqlx = { version = "0.8.6", features = ["runtime-tokio", "postgres", "macros", "runtime-tokio-native-tls"] }
 jwt-simple = "0.12.12"
 const-hex = "1.14.1"
+futures-core = "0.3.31"

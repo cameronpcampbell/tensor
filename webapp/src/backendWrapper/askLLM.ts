@@ -11,11 +11,11 @@ export const askLLM = async ({ msgContent, threadId, onChunk, onDone, setTimesta
     let result = '';
 
     try {
-        let response = await fetch("http://127.0.0.1:8080", {
+        let response = await fetch(`http://127.0.0.1:8080/chat/${threadId}`, {
             method: "POST",
-            body: `\{"body":${JSON.stringify(msgContent)},"thread_id":"${threadId}"\}`,
+            body: msgContent,
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "text/plain"
             },
             signal: abortSignal
         })

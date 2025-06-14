@@ -5,17 +5,12 @@
     margin-right: -12px;
     height: fit-content;
     --squircle-background: var(--color-text-primary-partial);
+    --squircle-border-background: var(--color-highlight10);
     display: inline-flex;
     flex-direction: column;
     font-family: Geist Mono;
     font-size: 0.9rem;
     color: var(--color-text-primary-full);
-
-    .border {
-        position: absolute;
-        inset: 0;
-        background: var(--color-highlight10);
-    }
 
     .header {
         width: 100%;

@@ -12,7 +12,7 @@ mod authenticate;
 use authenticate::{github_oauth_callback, github_oauth_login, initialize_github_oauth};
 
 mod threads;
-use threads::{handle_thread, initialize_threads};
+use threads::{send_message, initialize_threads};
 
 use crate::utils::db::{build_db, initialize_db};
 
@@ -29,9 +29,11 @@ async fn start() {
     initialize_threads().await;
 
     let github_oauth_client = Arc::new(initialize_github_oauth().await.unwrap());
-    
+
+    println!(":)");
+
     let app = Router::new()
-        .route("/", post(handle_thread))
+        .route("/chat/{thread_id}", post(send_message))
             .layer(tower_http::cors::CorsLayer::permissive())
             
         .route("/oauth/github", get(github_oauth_login))

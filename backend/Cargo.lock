@@ -6310,6 +6310,7 @@ dependencies = [
  "clap 4.5.40",
  "const-hex",
  "dotenvy",
+ "futures-core",
  "guarded",
  "jwt-simple",
  "kalosm",
