@@ -4,13 +4,11 @@ use axum::{
 use guarded::guarded_unwrap;
 use kalosm::language::*;
 use serde::Deserialize;
-use std::{collections::HashMap, sync::OnceLock, time::{SystemTime, UNIX_EPOCH}};
+use std::{time::{SystemTime, UNIX_EPOCH}};
 use tokio_stream::{wrappers::ReceiverStream};
 use tokio::sync::{mpsc, Mutex};
 
-use crate::utils::response::error_response;
-
-static CONVERSATIONS: OnceLock<Mutex<HashMap<String, Chat<Llama>>>> = OnceLock::new();
+use crate::{conversations::CONVERSATIONS, utils::response::error_response};
 
 #[derive(Deserialize)]
 pub struct AIPayload {
@@ -49,16 +47,4 @@ pub async fn handle_conversation(
         .header("X-Timestamp", timestamp)
         .body(Body::from_stream(ReceiverStream::new(rx)))
             .unwrap()
-}
-
-pub async fn initialise_conversations() {
-     println!("Downloading and starting model...");
-    let model = Llama::new_chat().await.unwrap();
-    println!("Model ready");
-
-    let mut conversations: HashMap<String, Chat<Llama>> = HashMap::new();
-    let conversation_id = String::from("12345");
-    conversations.insert(conversation_id, model.chat());
-
-    let _ = CONVERSATIONS.set(Mutex::new(conversations));
 }

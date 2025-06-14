@@ -1,0 +1,24 @@
+.userSettingsBar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .userInfo {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+
+        .userAvatar {
+            width: 21px;
+            aspect-ratio: 1;
+            background-color: var(--colorAccentPrimaryFull);
+            border-radius: 500px;
+        }
+
+        .username {
+            font-size: 0.938rem;
+            font-weight: 500;
+        }
+    }
+}
