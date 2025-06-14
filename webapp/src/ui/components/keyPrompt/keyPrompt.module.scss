@@ -3,11 +3,12 @@
     height: min-content;
     --squircle-background: var(--color-text-secondary-partial);
     --squircle-border-background: var(--color-highlight5);
-    position: relative;
+    height: 22px !important;
+    display: block;
 
     p {
         font-size: 0.875rem !important;
-        height: 22px;
-        padding: 1px 6px;
+        box-sizing: border-box;
+        padding: 1px 7px;
     }
 }

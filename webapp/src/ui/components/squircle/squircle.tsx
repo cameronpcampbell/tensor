@@ -85,11 +85,8 @@ const squircleInnerSvg = (
 }
 
 const renderSquircle = (
-    element: HTMLElement, _width: number, _height: number, options: SquircleOptions
+    element: HTMLElement, width: number, height: number, options: SquircleOptions
 ) => {
-    let width = Math.floor(_width)
-    let height = Math.floor(_height)
-
     element.classList.remove(styles.squirclePre as string)
     element.classList.add(styles.squirclePost as string)
 
