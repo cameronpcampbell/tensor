@@ -8,12 +8,12 @@ import { askLLM } from "~/backendWrapper/askLLM"
 
 interface AIResponseMessage extends ElementProps<"section"> {
     msgContent: string,
-    conversationId: string,
+    threadId: string,
     onDone?: (finalResult: string) => void,
     abortSignal?: AbortSignal
 }
 
-export const AIResponseMessage = ({ msgContent, conversationId, onDone, abortSignal, ...rest }: AIResponseMessage) => {
+export const AIResponseMessage = ({ msgContent, threadId, onDone, abortSignal, ...rest }: AIResponseMessage) => {
     let [ response, setResponse ] = useState<string>("")
     let [ timestamp, setTimestamp ] = useState<number>(Date.now())
 
@@ -23,7 +23,7 @@ export const AIResponseMessage = ({ msgContent, conversationId, onDone, abortSig
         if (responseGotten.current) return
         responseGotten.current = true
 
-        askLLM({ msgContent, conversationId, onDone, abortSignal, onChunk: setResponse, setTimestamp })
+        askLLM({ msgContent, threadId, onDone, abortSignal, onChunk: setResponse, setTimestamp })
     }, [])
 
     return <Message highlighted author={{ name: "LoremIpsumBot", avatar: "" }} timestamp={timestamp} {...rest as any}>

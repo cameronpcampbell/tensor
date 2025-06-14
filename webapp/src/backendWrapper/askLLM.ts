@@ -1,19 +1,19 @@
 interface AskLLMProps {
     msgContent: string,
-    conversationId: string,
+    threadId: string,
     onChunk: (result: string) => void,
     onDone?: (finalResult: string) => void,
     setTimestamp?: (timestamp: number) => void,
     abortSignal?: AbortSignal
 }
 
-export const askLLM = async ({ msgContent, conversationId, onChunk, onDone, setTimestamp, abortSignal }: AskLLMProps) => {
+export const askLLM = async ({ msgContent, threadId, onChunk, onDone, setTimestamp, abortSignal }: AskLLMProps) => {
     let result = '';
 
     try {
         let response = await fetch("http://127.0.0.1:8080", {
             method: "POST",
-            body: `\{"body":${JSON.stringify(msgContent)},"conversation_id":"${conversationId}"\}`,
+            body: `\{"body":${JSON.stringify(msgContent)},"thread_id":"${threadId}"\}`,
             headers: {
                 "Content-Type": "application/json"
             },

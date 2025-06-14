@@ -5,28 +5,18 @@ use sqlx::{postgres::PgPoolOptions, Pool as SqlxPool, Postgres};
 pub struct Pool(OnceLock<SqlxPool<Postgres>>);
 
 impl Pool {
-    fn get(&self) -> &sqlx::Pool<Postgres> {
+    pub fn get(&self) -> &sqlx::Pool<Postgres> {
         self.0.get().unwrap()
+    }
+
+    pub fn set(&self, pool: SqlxPool<Postgres>) -> Result<(), SqlxPool<Postgres>> {
+        self.0.set(pool)
     }
 }
 
 impl<'a> Into<&'a SqlxPool<Postgres>> for &'a Pool {
     fn into(self) -> &'a sqlx::Pool<Postgres> {
         self.0.get().unwrap()
-    }
-}
-
-impl Deref for Pool {
-    type Target = OnceLock<SqlxPool<Postgres>>;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-
-impl DerefMut for Pool {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
     }
 }
 
@@ -50,13 +40,20 @@ pub async fn build_db(with_deletion: bool) {
 
     if with_deletion {
         let _  = sqlx::raw_sql(r#"
+            DROP TABLE IF EXISTS messages;
+            DROP TABLE IF EXISTS models;
+            DROP TABLE IF EXISTS threads;
             DROP TABLE IF EXISTS users;
-            DROP TABLE IF EXISTS thread;
-            DROP TABLE IF EXISTS message;
         "#).execute(POOL.get()).await.unwrap();
     }
 
     let _  = sqlx::raw_sql(r#"
+        DO $$ BEGIN
+            CREATE TYPE sender_type AS ENUM ('user', 'model');
+        EXCEPTION
+            WHEN duplicate_object THEN null;
+        END $$;
+
         CREATE TABLE IF NOT EXISTS users (
             id char(21) DEFAULT nanoid(21) PRIMARY KEY,
             provider_userid TEXT NOT NULL,
@@ -65,13 +62,25 @@ pub async fn build_db(with_deletion: bool) {
 
         CREATE TABLE IF NOT EXISTS threads (
             id char(21) DEFAULT nanoid(21) PRIMARY KEY,
+            pinned bool NOT NULL,
             summary VARCHAR(50) NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS models (
+            id char(21) DEFAULT nanoid(21) PRIMARY KEY,
+            name VARCHAR(50) NOT NULL
         );
 
         CREATE TABLE IF NOT EXISTS messages (
             id char(21) DEFAULT nanoid(21) PRIMARY KEY,
-            conversation_id char(21) DEFAULT nanoid(21),
-            content TEXT NOT NULL
+            thread_id char(21) DEFAULT nanoid(21),
+            content TEXT NOT NULL,
+            user_id char(21) NOT NULL,
+            model_id char(21) NOT NULL,
+            sender_type sender_type NOT NULL,
+
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (model_id) REFERENCES models(id) ON DELETE CASCADE
         );
     "#).execute(POOL.get()).await.unwrap();
 }

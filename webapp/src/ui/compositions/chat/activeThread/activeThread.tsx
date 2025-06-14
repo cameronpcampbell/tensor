@@ -9,9 +9,9 @@ import { Messages } from "./messages/messages"
 import { SendMessageBox } from "./sendMessageBox/sendMessageBox"
 import { AIResponseMessage } from "./aiResponseMessage/aiResponseMessage"
 
-import styles from "./conversation.module.scss"
+import styles from "./activeThread.module.scss"
 
-export const Conversation = () => {
+export const ActiveThread = () => {
     let [ messages, setMessages ] = useState<ReactNode[]>([])
     let [ canSendMsg, setCanSendMsg ] = useState<boolean>(true)
 
@@ -37,7 +37,7 @@ export const Conversation = () => {
             <AIResponseMessage
                 key={messagesLen + 2}
                 msgContent={msgContent}
-                conversationId="12345"
+                threadId="12345"
                 onDone={() => setCanSendMsg(true)}
                 abortSignal={abortController.signal}
             />
@@ -45,7 +45,7 @@ export const Conversation = () => {
     }
 
     return (
-        <ContainerPrimary as="main" className={styles.conversation} bottomLeftCornerRadius={false} bottomRightCornerRadius={false}>
+        <ContainerPrimary as="main" className={styles.thread} bottomLeftCornerRadius={false} bottomRightCornerRadius={false}>
             <Messages>{ messages }</Messages>
 
             <span className={styles.sendMessageBoxWrapper}>

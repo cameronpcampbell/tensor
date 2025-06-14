@@ -6,30 +6,30 @@ use kalosm::language::*;
 use serde::Deserialize;
 use std::{time::{SystemTime, UNIX_EPOCH}};
 use tokio_stream::{wrappers::ReceiverStream};
-use tokio::sync::{mpsc, Mutex};
+use tokio::sync::mpsc;
 
-use crate::{conversations::CONVERSATIONS, utils::response::error_response};
+use crate::{threads::THREADS, utils::response::error_response};
 
 #[derive(Deserialize)]
 pub struct AIPayload {
     body: String,
-    conversation_id: String,
+    thread_id: String,
 }
 
 #[axum::debug_handler]
-pub async fn handle_conversation(
+pub async fn handle_thread(
     Json(payload): Json<AIPayload>,
 ) -> impl IntoResponse {
     let (tx, rx) = mpsc::channel::<Result<String, std::io::Error>>(16);
 
-    let mut conversations = CONVERSATIONS.get().unwrap().lock().await;
+    let mut threads = THREADS.get().unwrap().lock().await;
 
-    let conversation = guarded_unwrap!(
-        conversations.get_mut(&payload.conversation_id),
-        return error_response(StatusCode::NOT_FOUND, "Invalid conversation id!")
+    let thread = guarded_unwrap!(
+        threads.get_mut(&payload.thread_id),
+        return error_response(StatusCode::NOT_FOUND, "Invalid thread id!")
     );
 
-    let mut stream = conversation(&payload.body);
+    let mut stream = thread(&payload.body);
 
     tokio::spawn(async move {
         while let Some(chunk) = stream.next().await {

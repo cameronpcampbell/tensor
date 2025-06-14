@@ -1,14 +1,13 @@
 use std::{env, sync::{Arc, OnceLock}};
-
 use axum::{body::Body, extract::{Query, State}, http::{Response, StatusCode}, response::IntoResponse};
 use axum_extra::extract::CookieJar;
 use guarded::guarded_unwrap;
 use oauth2::{basic::BasicClient, reqwest, AuthUrl, AuthorizationCode, ClientId, ClientSecret, CsrfToken, PkceCodeChallenge, PkceCodeVerifier, RedirectUrl, Scope, TokenResponse, TokenUrl};
 use serde::Deserialize;
+use jwt_simple::prelude::*;
+use const_hex::FromHex;
 
 use crate::{utils::{cookie::{create_cookie, delete_cookie, CreateCookieOptions}, response::error_response}, OauthClient};
-
-use jwt_simple::prelude::*;
 
 #[derive(Debug, Deserialize)]
 pub struct OauthCallbackParams {
@@ -17,6 +16,8 @@ pub struct OauthCallbackParams {
 }
 
 static REQWEST_CLIENT: OnceLock<reqwest::Client> = OnceLock::new();
+
+static JWT_KEY: OnceLock<HS256Key> = OnceLock::new();
 
 #[axum::debug_handler]
 pub async fn github_oauth_login(State(client): State<Arc<OauthClient>>) -> impl IntoResponse {
@@ -109,10 +110,8 @@ pub async fn github_oauth_callback(
         Duration::from_days(14)
     );
 
-    let key = HS256Key::generate();
-
     let jwt = guarded_unwrap!(
-        key.authenticate(claims),
+        JWT_KEY.get().unwrap().authenticate(claims),
         return error_response(StatusCode::INTERNAL_SERVER_ERROR, "Could not create JWT!") 
     );
 
@@ -154,8 +153,14 @@ async fn github_user_info(access_token: &str) -> Result<GithubUserInfo, reqwest:
 }
 
 pub async fn initialize_github_oauth() -> Result<OauthClient, oauth2::url::ParseError> {
-    let client_id = env::var(format!("GITHUB_CLIENT_ID")).expect("Client Id");
+    let client_id = env::var("GITHUB_CLIENT_ID").expect("Client Id");
     let client_secret = env::var("GITHUB_CLIENT_SECRET").expect("Client Secret");
+
+    let jwt_key_hex = env::var("JWT_KEY").expect("JWT Key");
+    let _  = JWT_KEY.set(HS256Key::from_bytes(&<Vec<u8>>::from_hex(&jwt_key_hex).unwrap()));
+    //let key = HS256Key::generate();
+    //let hex_key=  key.to_bytes().encode_hex();
+    //println!("{}", hex_key);
 
     let _  = REQWEST_CLIENT.set(
         reqwest::ClientBuilder::new()

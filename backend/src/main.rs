@@ -11,8 +11,8 @@ mod utils;
 mod authenticate;
 use authenticate::{github_oauth_callback, github_oauth_login, initialize_github_oauth};
 
-mod conversations;
-use conversations::{handle_conversation, initialize_conversations};
+mod threads;
+use threads::{handle_thread, initialize_threads};
 
 use crate::utils::db::{build_db, initialize_db};
 
@@ -26,12 +26,12 @@ async fn start() {
     // The database needs to be initialized before everything else.
     initialize_db().await;
 
-    initialize_conversations().await;
+    initialize_threads().await;
 
     let github_oauth_client = Arc::new(initialize_github_oauth().await.unwrap());
     
     let app = Router::new()
-        .route("/", post(handle_conversation))
+        .route("/", post(handle_thread))
             .layer(tower_http::cors::CorsLayer::permissive())
             
         .route("/oauth/github", get(github_oauth_login))
