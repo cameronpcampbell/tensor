@@ -1,80 +1,42 @@
-use axum::{
-    body::Body, http::{Response, StatusCode}, response::IntoResponse, routing::post, Json, Router
-};
-use guarded::guarded_unwrap;
-use kalosm::language::*;
-use serde::Deserialize;
-use std::{collections::HashMap, sync::OnceLock, time::{SystemTime, UNIX_EPOCH}};
-use tokio_stream::{wrappers::ReceiverStream};
-use tokio::sync::{mpsc, Mutex};
+use axum::routing::{{get, post}, Router};
+use std::sync::Arc;
 
-static CONVERSATIONS: OnceLock<Mutex<HashMap<String, Chat<Llama>>>> = OnceLock::new();
+type OauthClient = oauth2::Client<oauth2::StandardErrorResponse<oauth2::basic::BasicErrorResponseType>, oauth2::StandardTokenResponse<oauth2::EmptyExtraTokenFields, oauth2::basic::BasicTokenType>, oauth2::StandardTokenIntrospectionResponse<oauth2::EmptyExtraTokenFields, oauth2::basic::BasicTokenType>, oauth2::StandardRevocableToken, oauth2::StandardErrorResponse<oauth2::RevocationErrorResponseType>, oauth2::EndpointSet, oauth2::EndpointNotSet, oauth2::EndpointNotSet, oauth2::EndpointNotSet, oauth2::EndpointSet>;
+
+mod utils;
+
+mod authenticate;
+use authenticate::{github_oauth_callback, github_oauth_login, initialise_github_oauth};
+
+mod conversations;
+use conversations::{handle_conversation, initialise_conversations};
+
+#[derive(Clone, serde::Deserialize)]
+pub struct QueryAxumCallback {
+    pub code: String,
+    pub state: String,
+}
 
 #[tokio::main]
 async fn main() {
-    println!("Downloading and starting model...");
-    let model = Llama::new_chat().await.unwrap();
-    println!("Model ready");
+    dotenvy::dotenv().ok();
 
-    let mut conversations: HashMap<String, Chat<Llama>> = HashMap::new();
-    let conversation_id = String::from("12345");
-    conversations.insert(conversation_id, model.chat());
+    initialise_conversations().await;
 
-    let _ = CONVERSATIONS.set(Mutex::new(conversations));
+    let github_oauth_client = Arc::new(initialise_github_oauth().await.unwrap());
     
-
     let app = Router::new()
-        .route("/", post(stream_response))
-        .layer(tower_http::cors::CorsLayer::permissive());
+        .route("/", post(handle_conversation))
+            .layer(tower_http::cors::CorsLayer::permissive())
+            
+        .route("/oauth/github", get(github_oauth_login))
+            .with_state(github_oauth_client.clone())
+
+        .route("/oauth/callback", get(github_oauth_callback))
+            .with_state(github_oauth_client.clone());
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
         .await
         .unwrap();
     axum::serve(listener, app).await.unwrap();
 }
-
-#[derive(Deserialize)]
-struct AIPayload {
-    body: String,
-    conversation_id: String,
-}
-
-#[axum::debug_handler]
-async fn stream_response(
-    Json(payload): Json<AIPayload>,
-) -> impl IntoResponse {
-    let (tx, rx) = mpsc::channel::<Result<String, std::io::Error>>(16);
-
-    let mut conversations = CONVERSATIONS.get().unwrap().lock().await;
-
-    let conversation = guarded_unwrap!(
-        conversations.get_mut(&payload.conversation_id),
-        return Response::builder()
-            .status(StatusCode::NOT_FOUND)
-            .body(Body::new(String::from("Invalid conversation id!")))
-            .unwrap()
-    );
-
-    let mut stream = conversation(&payload.body);
-
-    tokio::spawn(async move {
-        while let Some(chunk) = stream.next().await {
-            if tx.send(Ok(chunk)).await.is_err() { break }
-        }
-    });
-
-    let timestamp = match SystemTime::now().duration_since(UNIX_EPOCH) {
-        Ok(duration) => duration.as_millis().to_string(),
-        Err(_) => String::from("0")
-    };
-
-    Response::builder()
-        .header("Content-Type", "application/octet-stream")
-        .header("X-Timestamp", timestamp)
-        .body(Body::from_stream(ReceiverStream::new(rx)))
-        .unwrap()
-}
-
-
-
-
