@@ -7,7 +7,7 @@ use tokio::sync::Mutex;
 
 pub static CONVERSATIONS: OnceLock<Mutex<HashMap<String, Chat<Llama>>>> = OnceLock::new();
 
-pub async fn initialise_conversations() {
+pub async fn initialize_conversations() {
     println!("Downloading and starting model...");
     let model = Llama::new_chat().await.unwrap();
     println!("Model ready");

@@ -28,12 +28,12 @@ const formatTimestamp = (timestamp: number) => {
     }
 }
 
-export const Message = ({ author, timestamp, children, highlighted, ...rest }: MessageProps) => {
+export const Message = ({ author: { name, avatar }, timestamp, children, highlighted, ...rest }: MessageProps) => {
     return (
         <section data-highlighted={highlighted} className={styles.message} {...rest as any}>
             <span className={styles.author}>
-                <img src="/transparent.png" className={styles.authorAvatar} />
-                <h4 className={styles.authorName}>{author?.name ?? "LoremIpsum"}</h4>
+                <img src={avatar ? avatar : "transparent.png"} className={styles.authorAvatar} />
+                <h4 className={styles.authorName}>{name ?? "LoremIpsum"}</h4>
                 <p className={styles.timestamp}>{formatTimestamp(timestamp)}</p>
             </span>
 

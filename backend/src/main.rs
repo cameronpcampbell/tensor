@@ -9,10 +9,12 @@ use clap::{Parser, Subcommand, crate_version};
 mod utils;
 
 mod authenticate;
-use authenticate::{github_oauth_callback, github_oauth_login, initialise_github_oauth};
+use authenticate::{github_oauth_callback, github_oauth_login, initialize_github_oauth};
 
 mod conversations;
-use conversations::{handle_conversation, initialise_conversations};
+use conversations::{handle_conversation, initialize_conversations};
+
+use crate::utils::db::{build_db, initialize_db};
 
 #[derive(Clone, serde::Deserialize)]
 pub struct QueryAxumCallback {
@@ -21,9 +23,12 @@ pub struct QueryAxumCallback {
 }
 
 async fn start() {
-    initialise_conversations().await;
+    // The database needs to be initialized before everything else.
+    initialize_db().await;
 
-    let github_oauth_client = Arc::new(initialise_github_oauth().await.unwrap());
+    initialize_conversations().await;
+
+    let github_oauth_client = Arc::new(initialize_github_oauth().await.unwrap());
     
     let app = Router::new()
         .route("/", post(handle_conversation))
@@ -83,8 +88,11 @@ async fn main() {
         },
 
         Commands::Database(subcommand) => match subcommand {
-            DatabaseCommands::Init => {
-
+            DatabaseCommands::Build { with_deletion } => {
+                // We need to make sure our database is
+                // initialized before we use it
+                initialize_db().await;
+                build_db(with_deletion).await;
             }
         },
 
@@ -130,5 +138,8 @@ enum Commands {
 
 #[derive(Subcommand)]
 enum DatabaseCommands {
-    Init
+    Build {
+        #[clap(long = "delete", short = 'd')]
+        with_deletion: bool
+    },
 }

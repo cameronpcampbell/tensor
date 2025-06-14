@@ -12,9 +12,12 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.12.0",
+    "@types/cookie-parser": "^1.4.9",
+    "cookie": "^1.0.2",
     "corner-smoothing": "^0.1.5",
     "figma-squircle": "^1.1.0",
     "highlight.js": "^11.11.1",
+    "jwt-decode": "^4.0.0",
     "moment": "^2.30.1",
     "next": "^15.2.3",
     "react": "^19.0.0",

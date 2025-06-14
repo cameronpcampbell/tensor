@@ -1,6 +1,8 @@
 "use client"
 
-import { useState, type ReactNode } from "react"
+import { use, useState, type ReactNode } from "react"
+
+import { UserInfoContext } from "~/utils/userInfo"
 
 import { ContainerPrimary, Message } from "~/ui/components"
 import { Messages } from "./messages/messages"
@@ -15,6 +17,8 @@ export const Conversation = () => {
 
     let [ abortController, setAbortController ] = useState(new AbortController())
 
+    let [ userInfo ] = use(UserInfoContext)
+
     const handleOnMsgSend = (msgContent: string) => {
         setCanSendMsg(false)
 
@@ -24,7 +28,7 @@ export const Conversation = () => {
             ...prevMessages,
             <Message
                 key={messagesLen + 1}
-                author={{ name: "Cameron Campbell (You)", avatar: "" }}
+                author={{ name: `${userInfo.login} (You)`, avatar: userInfo.avatar_url }}
                 timestamp={Date.now()
             }>
                 {msgContent}

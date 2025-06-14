@@ -1,8 +1,8 @@
 import { type Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 
 import "~/app/globals.scss";
 import "~/ui/components/base.scss";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
     title: "Tensor",
@@ -15,7 +15,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en" className="tensorui dark">
-            <body>{children}</body>
+            <Providers>
+                <body>{children}</body>
+            </Providers>
         </html>
     );
 }

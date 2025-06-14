@@ -1,4 +1,4 @@
-use std::{fs, ops::{Deref, DerefMut}, sync::OnceLock};
+use std::{ops::{Deref, DerefMut}, sync::OnceLock};
 
 use sqlx::{postgres::PgPoolOptions, Pool as SqlxPool, Postgres};
 
@@ -32,7 +32,9 @@ impl DerefMut for Pool {
 
 pub static POOL: Pool = Pool(OnceLock::new());
 
-async fn initialise_db() {
+const NANOID_SRC: &str = include_str!("./nanoid.sql");
+
+pub async fn initialize_db() {
     let pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(&std::env::var("POSTGRES_URL").unwrap())
@@ -42,27 +44,34 @@ async fn initialise_db() {
     let _ = POOL.set(pool);
 }
 
-async fn build_db() {
+pub async fn build_db(with_deletion: bool) {
     // Loads nanoid (a UUID module).
-    let nanoid_sql = fs::read_to_string("path/to/file.sql").unwrap();
-    let _ = sqlx::query(&nanoid_sql).execute(POOL.get()).await;
+    let _ = sqlx::raw_sql(&NANOID_SRC).execute(POOL.get()).await;
 
-    let _  = sqlx::query(r#"
+    if with_deletion {
+        let _  = sqlx::raw_sql(r#"
+            DROP TABLE IF EXISTS users;
+            DROP TABLE IF EXISTS thread;
+            DROP TABLE IF EXISTS message;
+        "#).execute(POOL.get()).await.unwrap();
+    }
+
+    let _  = sqlx::raw_sql(r#"
         CREATE TABLE IF NOT EXISTS users (
             id char(21) DEFAULT nanoid(21) PRIMARY KEY,
-            id_for_provider TEXT NOT NULL,
-            provider_name TEXT NOT NULL,
+            provider_userid TEXT NOT NULL,
+            provider_username TEXT NOT NULL
         );
 
-        CREATE TABLE IF NOT EXISTS thread (
+        CREATE TABLE IF NOT EXISTS threads (
             id char(21) DEFAULT nanoid(21) PRIMARY KEY,
-            summary TEXT NOT NULL
+            summary VARCHAR(50) NOT NULL
         );
 
-        CREATE TABLE IF NOT EXISTS message (
+        CREATE TABLE IF NOT EXISTS messages (
             id char(21) DEFAULT nanoid(21) PRIMARY KEY,
             conversation_id char(21) DEFAULT nanoid(21),
-            content TEXT NOT NULL,
+            content TEXT NOT NULL
         );
-    "#).execute(POOL.get()).await;
+    "#).execute(POOL.get()).await.unwrap();
 }

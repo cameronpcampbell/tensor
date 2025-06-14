@@ -1,8 +1,17 @@
+"use client"
+
+import { jwtDecode } from "jwt-decode";
+
 import { Button, TextInput, Icon, Heading, UserSettingsBar } from "~/ui/components"
 
 import styles from "./sidebar.module.scss"
+import { use, useEffect, useMemo, useState } from "react";
+import { UserInfoContext } from "~/utils/userInfo";
+
 
 export const Sidebar = () => {
+    let [ userInfo ] = use(UserInfoContext)
+
     return <aside className={styles.sidebar}>
         <section className={styles.threads}>
             <section className={styles.threadControls}>
@@ -63,7 +72,7 @@ export const Sidebar = () => {
         </section>
 
         <section className={styles.userSettings}>
-            <UserSettingsBar />
+            <UserSettingsBar userInfo={userInfo} />
         </section>
     </aside>
 }
