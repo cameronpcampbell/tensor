@@ -1,4 +1,4 @@
-import { Squircle, SquircleBorder } from "~/ui/components"
+import { Squircle, SquircleBorder } from "@/ui/components"
 
 import styles from "./inlineCode.module.scss"
 

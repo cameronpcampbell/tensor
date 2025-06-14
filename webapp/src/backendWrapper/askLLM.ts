@@ -29,7 +29,7 @@ export const askLLM = async ({ msgContent, threadId, onChunk, onDone, setTimesta
         let reader = response.body?.getReader()
         if (!reader) { return }
 
-        const decoder = new TextDecoder('utf-8');
+        const decoder = new TextDecoder("utf-8");
 
         let { done, value } = await reader.read();
 

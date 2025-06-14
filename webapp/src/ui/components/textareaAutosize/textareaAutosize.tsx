@@ -1,7 +1,7 @@
 "use client"
 
 import TextareaAutosizeReact, { type TextareaAutosizeProps as _TextareaAutosizeProps  } from 'react-textarea-autosize';
-import type { ElementProps } from '~/utils/types';
+import type { ElementProps } from "@/utils/types";
 
 import styles from "./textareaAutosize.module.scss"
 

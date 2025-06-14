@@ -1,6 +1,6 @@
 "use client"
 
-import type { ElementProps } from "~/utils/types"
+import type { ElementProps } from "@/utils/types"
 
 import { Squircle, type CornerSmoothingProps } from "../squircle/squircle"
 

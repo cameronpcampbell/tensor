@@ -1,4 +1,4 @@
-import type { ElementProps } from "~/utils/types"
+import type { ElementProps } from "@/utils/types"
 
 import styles from "./icon.module.scss"
 

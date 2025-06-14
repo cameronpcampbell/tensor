@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, type ReactNode } from "react"
-import type { ElementProps } from "~/utils/types"
+import type { ElementProps } from "@/utils/types"
 
 import styles from "./chipButton.module.scss"
 import { FocusVisual } from "../focusVisual/focusVisual"

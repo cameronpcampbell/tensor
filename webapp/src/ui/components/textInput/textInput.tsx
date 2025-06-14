@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react"
 
-import { FocusVisual, ContainerSecondary, Icon } from "~/ui/components"
-import type { ElementProps } from "~/utils/types"
+import { FocusVisual, ContainerSecondary, Icon } from "@/ui/components"
+import type { ElementProps } from "@/utils/types"
 
 import styles from "./textInput.module.scss"
 import { KeyPrompt } from "../keyPrompt/keyPrompt"

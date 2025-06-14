@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type JSX } from 'react'
 import { Squircle as CornerSmoothing } from 'corner-smoothing'
-import type { ElementName, ElementProps } from '~/utils/types'
+import type { ElementName, ElementProps } from "@/utils/types"
 
 import styles from "./squircle.module.scss"
 

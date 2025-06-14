@@ -2,7 +2,7 @@
 
 import { getSvgPath } from 'figma-squircle'
 import { useCallback, useRef } from 'react'
-import type { ElementName, ElementProps } from '~/utils/types'
+import type { ElementName, ElementProps } from "@/utils/types"
 
 import styles from "./squircleBorder.module.scss"
 

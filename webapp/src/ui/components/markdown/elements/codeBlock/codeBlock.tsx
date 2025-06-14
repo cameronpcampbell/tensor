@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { codeToHtml, createHighlighter } from 'shiki'
 
-import { Squircle, SquircleBorder } from "~/ui/components"
+import { Squircle, SquircleBorder } from "@/ui/components"
 
 import styles from "./codeBlock.module.scss"
 

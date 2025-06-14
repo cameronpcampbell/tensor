@@ -1,5 +1,5 @@
-import { Button, Icon } from "~/ui/components"
-import type { UserInfo } from "~/utils/userInfo"
+import { Button, Icon } from "@/ui/components"
+import type { UserInfo } from "@/utils/userInfo"
 
 import styles from "./userSettingsBar.module.scss"
 

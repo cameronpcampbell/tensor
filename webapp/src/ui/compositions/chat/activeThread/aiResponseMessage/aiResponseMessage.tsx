@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react"
 
-import type { ElementProps } from "~/utils/types"
+import type { ElementProps } from "@/utils/types"
 
-import { Message } from "~/ui/components"
-import { askLLM } from "~/backendWrapper/askLLM"
+import { Message } from "@/ui/components"
+import { askLLM } from "@/backendWrapper/askLLM"
 
 
 interface AIResponseMessage extends ElementProps<"section"> {

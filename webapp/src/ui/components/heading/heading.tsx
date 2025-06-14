@@ -1,5 +1,5 @@
 import { Icon } from "../icon/icon"
-import type { ElementProps } from "~/utils/types"
+import type { ElementProps } from "@/utils/types"
 
 import styles from "./heading.module.scss"
 

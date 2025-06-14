@@ -2,9 +2,9 @@
 
 import { use, useState, type ReactNode } from "react"
 
-import { UserInfoContext } from "~/utils/userInfo"
+import { UserInfoContext } from "@/utils/userInfo"
 
-import { ContainerPrimary, Message } from "~/ui/components"
+import { ContainerPrimary, Message } from "@/ui/components"
 import { Messages } from "./messages/messages"
 import { SendMessageBox } from "./sendMessageBox/sendMessageBox"
 import { AIResponseMessage } from "./aiResponseMessage/aiResponseMessage"

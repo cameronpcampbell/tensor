@@ -1,7 +1,7 @@
 import { type Metadata } from "next";
 
-import "~/app/globals.scss";
-import "~/ui/components/base.scss";
+import "@/app/globals.scss";
+import "@/ui/components/base.scss";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {

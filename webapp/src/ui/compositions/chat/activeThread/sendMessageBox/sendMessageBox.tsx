@@ -1,6 +1,6 @@
 "use client"
 
-import { ChipButton, ContainerSecondary, Button, TextareaAutosize, FocusVisual, Icon } from "~/ui/components"
+import { ChipButton, ContainerSecondary, Button, TextareaAutosize, FocusVisual, Icon } from "@/ui/components"
 
 import styles from "./sendMessageBox.module.scss"
 import { useMemo, useRef, useState } from "react"

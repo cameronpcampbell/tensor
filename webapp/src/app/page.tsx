@@ -1,4 +1,4 @@
-import { Chat } from "~/ui/compositions/chat/chat"
+import { Chat } from "@/ui/compositions/chat/chat"
 
 export default () => (
     <Chat />

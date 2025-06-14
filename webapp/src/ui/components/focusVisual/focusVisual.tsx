@@ -3,7 +3,7 @@
 import { type ReactElement } from "react"
 
 import { SquircleBorder } from "../squircle/squircleBorder"
-import type { ElementProps } from "~/utils/types"
+import type { ElementProps } from "@/utils/types"
 
 import styles from "./focusVisual.module.scss"
 
