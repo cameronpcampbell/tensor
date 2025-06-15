@@ -4,16 +4,17 @@ import { useState, createContext, type ReactNode, useEffect, type SetStateAction
 import cookie from "cookie"
 import { jwtDecode, type JwtPayload } from 'jwt-decode';
 
-export const UserInfoContext = createContext<[ UserInfo, Dispatch<SetStateAction<UserInfo>> ]>(undefined as any)
+export const UserInfoContext = createContext<[ UserInfo | undefined, Dispatch<SetStateAction<UserInfo | undefined>> ]>(undefined as any)
 
 export const UserInfoProvider = ({ children }: { children: ReactNode }) => {
-    const [userInfo, setUserInfo] = useState<UserInfo>({} as any);
+    const [userInfo, setUserInfo] = useState<UserInfo | undefined>(undefined);
 
     useEffect(() => {
         let jwt = cookie.parse(document.cookie)["oauth.session"]
         if (!jwt) return
 
         let userInfo = getUserInfoFromJWT(jwt)
+        console.log(userInfo)
         setUserInfo(userInfo)
     }, [])
 
@@ -21,17 +22,21 @@ export const UserInfoProvider = ({ children }: { children: ReactNode }) => {
 }
 
 export type UserInfo = {
-    id: number,
-    login: string,
-    avatar_url: string
+    user_id: string,
+    provider_user_id: number,
+    provider_username: string,
+    provider_avatar_url: string,
+    provider_type: "github",
 }
 
 export const getUserInfoFromJWT = (jwt: string) => {
     let parsed = jwtDecode(jwt)
 
     return {
-        id: (parsed as any).id,
-        login: (parsed as any).login,
-        avatar_url: (parsed as any).avatar_url
+        user_id: (parsed as any).user_id,
+        provider_user_id: (parsed as any).provider_user_id,
+        provider_username: (parsed as any).provider_username,
+        provider_avatar_url: (parsed as any).provider_avatar_url,
+        provider_type: (parsed as any).provider_type,
     }
 }

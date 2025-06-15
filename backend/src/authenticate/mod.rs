@@ -68,9 +68,10 @@ pub async fn github_oauth_login(State(client): State<Arc<OauthClient>>) -> impl 
 #[derive(Serialize, Deserialize)]
 struct JwtClaims {
     user_id: String,
-    provider_id: String,
+    provider_user_id: usize,
+    provider_username: String,
+    provider_avatar_url: String,
     provider_type: ProviderType,
-    avatar_url: String
 }
 
 #[axum::debug_handler]
@@ -114,7 +115,7 @@ pub async fn github_oauth_callback(
         return error_response(StatusCode::INTERNAL_SERVER_ERROR, "Could not fetch your github user information!")
     );
 
-    let (provider_id, provider_type) = (&oauth_user_info.login, ProviderType::Github);
+    let (provider_id, provider_type) = (&oauth_user_info.id.to_string(), ProviderType::Github);
 
     // Ideally the queries bellow would be batched where possible, and would use 
     // the same pool connection. But sqlx doesn't want to play nice. :/
@@ -133,7 +134,6 @@ pub async fn github_oauth_callback(
     );
 
     let user_id = if let Some(user_id_row) = user_id_row {
-        println!("already existed");
         user_id_row.get::<String, _>(0)
 
     // User has not signed up with this provider before.
@@ -146,14 +146,13 @@ pub async fn github_oauth_callback(
         user_id
     };
 
-    println!("user_id: {}", user_id);
-
     let claims = Claims::with_custom_claims::<JwtClaims>(
         JwtClaims {
-            user_id: "test".into(),
-            provider_id: oauth_user_info.login,
+            user_id,
+            provider_user_id: oauth_user_info.id,
+            provider_username: oauth_user_info.login,
+            provider_avatar_url: oauth_user_info.avatar_url,
             provider_type: ProviderType::Github,
-            avatar_url: oauth_user_info.avatar_url
         },
         Duration::from_days(14)
     );
@@ -185,6 +184,7 @@ pub async fn github_oauth_callback(
 #[derive(Serialize, Deserialize, Debug)]
 struct GithubUserInfo {
     login: String,
+    id: usize,
     avatar_url: String
 }
 
