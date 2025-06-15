@@ -14,7 +14,6 @@ export const UserInfoProvider = ({ children }: { children: ReactNode }) => {
         if (!jwt) return
 
         let userInfo = getUserInfoFromJWT(jwt)
-        console.log(userInfo)
         setUserInfo(userInfo)
     }, [])
 
