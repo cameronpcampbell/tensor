@@ -6,9 +6,11 @@ use oauth2::{basic::BasicClient, reqwest, AuthUrl, AuthorizationCode, ClientId, 
 use serde::Deserialize;
 use jwt_simple::prelude::*;
 use const_hex::FromHex;
-use sqlx::{Acquire, Row};
+use sqlx::Row;
 
-use crate::{utils::{cookie::{create_cookie, delete_cookie, CreateCookieOptions}, db::{create_user_in_db, create_user_provider_in_db, ProviderType, POOL}, response::{error_response, internal_error_response}}, OauthClient};
+pub mod jwt;
+
+use crate::{authenticate::jwt::{UserInfoClaims, JWT_KEY}, utils::{cookie::{create_cookie, delete_cookie, CreateCookieOptions}, db::{create_user_in_db, create_user_provider_in_db, ProviderType, POOL}, response::{error_response, internal_error_response}}, OauthClient};
 
 #[derive(Debug, Deserialize)]
 pub struct OauthCallbackParams {
@@ -17,8 +19,6 @@ pub struct OauthCallbackParams {
 }
 
 static REQWEST_CLIENT: OnceLock<reqwest::Client> = OnceLock::new();
-
-static JWT_KEY: OnceLock<HS256Key> = OnceLock::new();
 
 #[axum::debug_handler]
 pub async fn github_oauth_login(State(client): State<Arc<OauthClient>>) -> impl IntoResponse {
@@ -63,15 +63,6 @@ pub async fn github_oauth_login(State(client): State<Arc<OauthClient>>) -> impl 
         .header("Set-Cookie", state_cookie)
         .body(Body::empty())
         .unwrap()
-}
-
-#[derive(Serialize, Deserialize)]
-struct JwtClaims {
-    user_id: String,
-    provider_user_id: usize,
-    provider_username: String,
-    provider_avatar_url: String,
-    provider_type: ProviderType,
 }
 
 #[axum::debug_handler]
@@ -146,8 +137,8 @@ pub async fn github_oauth_callback(
         user_id
     };
 
-    let claims = Claims::with_custom_claims::<JwtClaims>(
-        JwtClaims {
+    let claims = Claims::with_custom_claims::<UserInfoClaims>(
+        UserInfoClaims {
             user_id,
             provider_user_id: oauth_user_info.id,
             provider_username: oauth_user_info.login,

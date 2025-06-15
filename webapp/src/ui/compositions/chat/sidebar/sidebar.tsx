@@ -1,12 +1,12 @@
 "use client"
 
-import { jwtDecode } from "jwt-decode";
+import { use} from "react";
 
-import { Button, TextInput, Icon, Heading, UserSettingsBar } from "@/ui/components"
+import { UserInfoContext } from "@/utils/userInfo";
+import { Button, TextInput, Icon, Heading } from "@/ui/components"
+import { UserSettingsBar } from "./userSettingsBar/userSettingsBar";
 
 import styles from "./sidebar.module.scss"
-import { use, useEffect, useMemo, useState } from "react";
-import { UserInfoContext } from "@/utils/userInfo";
 
 
 export const Sidebar = () => {

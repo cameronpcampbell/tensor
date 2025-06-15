@@ -1,18 +1,20 @@
-use std::{collections::HashMap, sync::OnceLock};
-
-use kalosm::language::{Chat, ChatModelExt, Llama};
-use tokio::sync::Mutex;
+use std::{sync::OnceLock};
+use dashmap::DashMap;
+use kalosm::language::{Chat, Llama};
 
 mod send_message;
 pub use send_message::*;
 
 mod new_thread;
-pub use send_message::*;
+pub use new_thread::*;
 
 mod thread_summary;
 pub use thread_summary::*;
 
-pub static THREADS: OnceLock<Mutex<HashMap<String, Chat<Llama>>>> = OnceLock::new();
+mod get_threads;
+pub use get_threads::*;
+
+pub static THREADS: OnceLock<DashMap<String, Chat<Llama>>> = OnceLock::new();
 
 pub static LLAMA_MODEL: OnceLock<Llama> = OnceLock::new();
 
@@ -37,11 +39,7 @@ pub async fn initialize_threads() {
 
             let _ = LLAMA_MODEL_CHAT.set(model);
 
-            let mut threads: HashMap<String, Chat<Llama>> = HashMap::new();
-            let thread_id = String::from("12345");
-            threads.insert(thread_id, LLAMA_MODEL_CHAT.get().unwrap().chat());
-
-            let _ = THREADS.set(Mutex::new(threads));
+            let _ = THREADS.set(DashMap::new());
         })
     );
 }

@@ -1,6 +1,5 @@
-use axum::routing::{{get, post}, Router};
 use tokio::io::{stdout, AsyncWriteExt};
-use std::{path::PathBuf, sync::Arc};
+use std::{path::PathBuf};
 
 type OauthClient = oauth2::Client<oauth2::StandardErrorResponse<oauth2::basic::BasicErrorResponseType>, oauth2::StandardTokenResponse<oauth2::EmptyExtraTokenFields, oauth2::basic::BasicTokenType>, oauth2::StandardTokenIntrospectionResponse<oauth2::EmptyExtraTokenFields, oauth2::basic::BasicTokenType>, oauth2::StandardRevocableToken, oauth2::StandardErrorResponse<oauth2::RevocationErrorResponseType>, oauth2::EndpointSet, oauth2::EndpointNotSet, oauth2::EndpointNotSet, oauth2::EndpointNotSet, oauth2::EndpointSet>;
 
@@ -9,41 +8,18 @@ use clap::{Parser, Subcommand, crate_version};
 mod utils;
 
 mod authenticate;
-use authenticate::{github_oauth_callback, github_oauth_login, initialize_github_oauth};
 
 mod threads;
-use threads::{send_message, initialize_threads};
 
-use crate::utils::db::{build_db, initialize_db};
+mod app;
+use app::start_app;
+
+use crate::{utils::db::{build_db, initialize_db}};
 
 #[derive(Clone, serde::Deserialize)]
 pub struct QueryAxumCallback {
     pub code: String,
     pub state: String,
-}
-
-async fn start() {
-    // The database needs to be initialized before everything else.
-    initialize_db().await;
-
-    //initialize_threads().await;
-
-    let github_oauth_client = Arc::new(initialize_github_oauth().await.unwrap());
-
-    let app = Router::new()
-        .route("/chat/{thread_id}", post(send_message))
-            .layer(tower_http::cors::CorsLayer::permissive())
-            
-        .route("/oauth/github", get(github_oauth_login))
-            .with_state(github_oauth_client.clone())
-
-        .route("/oauth/callback", get(github_oauth_callback))
-            .with_state(github_oauth_client.clone());
-
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
-        .await
-        .unwrap();
-    axum::serve(listener, app).await.unwrap();
 }
 
 #[tokio::main]
@@ -54,7 +30,7 @@ async fn main() {
 
     match cli.command {
         Commands::Backend { config } => {
-            start().await
+            start_app().await
         }
 
         Commands::Dev { config } => {
@@ -66,7 +42,7 @@ async fn main() {
                     .expect("failed to spawn command");
             });
             
-            start().await
+            start_app().await
         },
 
         Commands::Build { config } => {
@@ -88,7 +64,7 @@ async fn main() {
                     .expect("failed to spawn command");
             });
             
-            start().await
+            start_app().await
         },
 
         Commands::Database(subcommand) => match subcommand {

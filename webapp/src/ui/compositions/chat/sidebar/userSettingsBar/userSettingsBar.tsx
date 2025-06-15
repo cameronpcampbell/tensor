@@ -22,9 +22,11 @@ export const UserSettingsBar = ({ userInfo }: { userInfo?: UserInfo }) => {
                     <Icon image="icons/settings.svg" size="large" />
                 </Button>
             ) : (
-                <Button variant="ghost">
-                    <Icon image="icons/login.svg" size="large" />
-                </Button>
+                <a href="http://127.0.01:8080/oauth/github">
+                    <Button variant="ghost">
+                        <Icon image="icons/login.svg" size="large" />
+                    </Button>
+                </a>
             )
         }
     </div>

@@ -1,24 +1,24 @@
 use axum::{
-    extract::Path, http::{Response, StatusCode}, response::IntoResponse
+    extract::Path, http::{StatusCode}, response::Response
 };
+use axum_extra::extract::CookieJar;
 use guarded::guarded_unwrap;
-use std::{time::{SystemTime, UNIX_EPOCH}};
 
-use crate::{threads::{summary, THREADS}, utils::{response::error_response, stream_to_channel::StreamToChannel}};
+use crate::{threads::THREADS, utils::{response::error_response, stream_to_channel::StreamToChannel, timestamp::timestamp_now}, with_jwt};
 
 #[axum::debug_handler]
 pub async fn send_message(
     Path(thread_id): Path<String>,
-    payload: String,
-) -> impl IntoResponse {
-    let timestamp = match SystemTime::now().duration_since(UNIX_EPOCH) {
-        Ok(duration) => duration.as_millis().to_string(),
-        Err(_) => String::from("0")
-    };
+    cookie_jar: CookieJar,
+    payload: String
+) -> Response {
+    let timestamp = timestamp_now().to_string();
 
-    let mut threads = THREADS.get().unwrap().lock().await;
+    let claims = with_jwt!(cookie_jar);
 
-    let thread = guarded_unwrap!(
+    let threads = THREADS.get().unwrap();
+
+    let mut chat = guarded_unwrap!(
         threads.get_mut(&thread_id),
         return error_response(StatusCode::NOT_FOUND, "Invalid thread id!")
     );
@@ -26,6 +26,6 @@ pub async fn send_message(
     Response::builder()
         .header("Content-Type", "application/octet-stream")
         .header("X-Timestamp", timestamp)
-        .body( StreamToChannel::new(thread(&payload)).into() )
+        .body(StreamToChannel::new(chat.value_mut()(&payload)).into())
             .unwrap()
 }

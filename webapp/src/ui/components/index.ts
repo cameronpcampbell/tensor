@@ -19,5 +19,3 @@ export { Icon } from "./icon/icon"
 export { Heading } from "./heading/heading"
 
 export { Markdown } from "./markdown/markdown"
-
-export { UserSettingsBar } from "./userSettingsBar/userSettingsBar"

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react"
 import type { ElementProps } from "@/utils/types"
 
 import { Message } from "@/ui/components"
-import { askLLM } from "@/backendWrapper/askLLM"
+import { sendMessage } from "@/backendWrapper/sendMessage"
 
 
 interface AIResponseMessage extends ElementProps<"section"> {
@@ -23,7 +23,7 @@ export const AIResponseMessage = ({ msgContent, threadId, onDone, abortSignal, .
         if (responseGotten.current) return
         responseGotten.current = true
 
-        askLLM({ msgContent, threadId, onDone, abortSignal, onChunk: setResponse, setTimestamp })
+        sendMessage({ msgContent, threadId, onDone, abortSignal, onChunk: setResponse, setTimestamp })
     }, [])
 
     return <Message highlighted author={{ name: "LoremIpsumBot", avatar: "" }} timestamp={timestamp} {...rest as any}>
