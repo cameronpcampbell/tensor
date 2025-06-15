@@ -1,8 +1,7 @@
 use axum::{
-    body::Body, extract::Path, http::{Response, StatusCode}, response::IntoResponse
+    extract::Path, http::{Response, StatusCode}, response::IntoResponse
 };
 use guarded::guarded_unwrap;
-use serde::Deserialize;
 use std::{time::{SystemTime, UNIX_EPOCH}};
 
 use crate::{threads::{summary, THREADS}, utils::{response::error_response, stream_to_channel::StreamToChannel}};
@@ -12,8 +11,6 @@ pub async fn send_message(
     Path(thread_id): Path<String>,
     payload: String,
 ) -> impl IntoResponse {
-    println!("{}", payload);
-
     let timestamp = match SystemTime::now().duration_since(UNIX_EPOCH) {
         Ok(duration) => duration.as_millis().to_string(),
         Err(_) => String::from("0")

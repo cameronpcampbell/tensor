@@ -6,8 +6,9 @@ use oauth2::{basic::BasicClient, reqwest, AuthUrl, AuthorizationCode, ClientId, 
 use serde::Deserialize;
 use jwt_simple::prelude::*;
 use const_hex::FromHex;
+use sqlx::{Acquire, Row};
 
-use crate::{utils::{cookie::{create_cookie, delete_cookie, CreateCookieOptions}, response::error_response}, OauthClient};
+use crate::{utils::{cookie::{create_cookie, delete_cookie, CreateCookieOptions}, db::{create_user_in_db, create_user_provider_in_db, ProviderType, POOL}, response::{error_response, internal_error_response}}, OauthClient};
 
 #[derive(Debug, Deserialize)]
 pub struct OauthCallbackParams {
@@ -64,6 +65,14 @@ pub async fn github_oauth_login(State(client): State<Arc<OauthClient>>) -> impl 
         .unwrap()
 }
 
+#[derive(Serialize, Deserialize)]
+struct JwtClaims {
+    user_id: String,
+    provider_id: String,
+    provider_type: ProviderType,
+    avatar_url: String
+}
+
 #[axum::debug_handler]
 pub async fn github_oauth_callback(
     State(client): State<Arc<OauthClient>>,
@@ -100,13 +109,52 @@ pub async fn github_oauth_callback(
 
     let oauth_access_token = oauth_token_response.access_token().secret().to_string();
 
-    let user_info = guarded_unwrap!(
-        github_user_info(&oauth_access_token).await,
+    let oauth_user_info = guarded_unwrap!(
+        github_oauth_user_info(&oauth_access_token).await,
         return error_response(StatusCode::INTERNAL_SERVER_ERROR, "Could not fetch your github user information!")
     );
 
-    let claims = Claims::with_custom_claims::<GithubUserInfo>(
-        user_info,
+    let (provider_id, provider_type) = (&oauth_user_info.login, ProviderType::Github);
+
+    // Ideally the queries bellow would be batched where possible, and would use 
+    // the same pool connection. But sqlx doesn't want to play nice. :/
+
+    // Sees if the user has already signed up with this provider.
+    let user_id_row = guarded_unwrap!(
+        sqlx::query(r#"
+            SELECT user_id FROM user_providers
+            WHERE provider_id = $1
+            AND provider_type = $2 :: provider_type
+        "#)
+            .bind(provider_id)
+            .bind(provider_type.as_str())
+            .fetch_optional(POOL.get()).await,
+        return error_response(StatusCode::INTERNAL_SERVER_ERROR, "INTERNAL SERVER ERROR!")
+    );
+
+    let user_id = if let Some(user_id_row) = user_id_row {
+        println!("already existed");
+        user_id_row.get::<String, _>(0)
+
+    // User has not signed up with this provider before.
+    // Assume they are a brand new user and create them an account.
+    } else {
+        let user_id = guarded_unwrap!(create_user_in_db(None).await, return internal_error_response());
+
+        guarded_unwrap!(create_user_provider_in_db(&user_id, provider_id, provider_type, None).await, return internal_error_response());
+
+        user_id
+    };
+
+    println!("user_id: {}", user_id);
+
+    let claims = Claims::with_custom_claims::<JwtClaims>(
+        JwtClaims {
+            user_id: "test".into(),
+            provider_id: oauth_user_info.login,
+            provider_type: ProviderType::Github,
+            avatar_url: oauth_user_info.avatar_url
+        },
         Duration::from_days(14)
     );
 
@@ -137,11 +185,10 @@ pub async fn github_oauth_callback(
 #[derive(Serialize, Deserialize, Debug)]
 struct GithubUserInfo {
     login: String,
-    id: usize,
     avatar_url: String
 }
 
-async fn github_user_info(access_token: &str) -> Result<GithubUserInfo, reqwest::Error> {
+async fn github_oauth_user_info(access_token: &str) -> Result<GithubUserInfo, reqwest::Error> {
     REQWEST_CLIENT.get().unwrap()
         .get("https://api.github.com/user")
         .header("User-Agent", "Tensor: Open Source AI Chat App.")
@@ -158,9 +205,6 @@ pub async fn initialize_github_oauth() -> Result<OauthClient, oauth2::url::Parse
 
     let jwt_key_hex = env::var("JWT_KEY").expect("JWT Key");
     let _  = JWT_KEY.set(HS256Key::from_bytes(&<Vec<u8>>::from_hex(&jwt_key_hex).unwrap()));
-    //let key = HS256Key::generate();
-    //let hex_key=  key.to_bytes().encode_hex();
-    //println!("{}", hex_key);
 
     let _  = REQWEST_CLIENT.set(
         reqwest::ClientBuilder::new()

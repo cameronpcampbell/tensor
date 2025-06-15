@@ -21,28 +21,33 @@ export const CodeBlock = ({
     const lang = useMemo(() => /language-(\w+)/.exec(className || '')?.[1], [])
 
     if (typeof children === "string") {
+        const langAlreadyLoaded = useMemo(() => lang && shikiLangExists(highlighter, lang), [])
+
+        // Attempts to load in the language if it already loaded.
         const [ code, setCode ] = useState(highlighter.codeToHtml(children, {
-            lang: (lang && shikiLangExists(highlighter, lang) && lang || undefined) as any,
+            lang: (langAlreadyLoaded ? lang : undefined) as any,
             theme: "github-dark-default",
             tabindex: false,
             ...rest
         }))
 
+        useEffect(() => {
+            if (langAlreadyLoaded) return
+
+            (async () => {
+                try {
+                    await highlighter.loadLanguage(lang as any)
+                } catch {}
+
+                setCode(highlighter.codeToHtml(children, {
+                    lang: lang ?? "plaintext",
+                    theme: "github-dark-default",
+                    tabindex: false
+                }))
+            })()
+        }, [])
+
         try {
-            useEffect(() => {
-                (async () => {
-                    try {
-                        await highlighter.loadLanguage(lang as any)
-                    } catch {}
-
-                    setCode(highlighter.codeToHtml(children, {
-                        lang: lang ?? "plaintext",
-                        theme: "github-dark-default",
-                        tabindex: false
-                    }))
-                })()
-            }, [])
-
             return <Squircle cornerRadius={8} className={[ className, styles.codeBlock ].join(" ")} as="code">
                 <Squircle className={styles.border} cornerRadius={8} as="code" />
                 <header className={styles.header}>{lang ?? "plaintext"}</header>

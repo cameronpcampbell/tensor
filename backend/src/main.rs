@@ -26,11 +26,9 @@ async fn start() {
     // The database needs to be initialized before everything else.
     initialize_db().await;
 
-    initialize_threads().await;
+    //initialize_threads().await;
 
     let github_oauth_client = Arc::new(initialize_github_oauth().await.unwrap());
-
-    println!(":)");
 
     let app = Router::new()
         .route("/chat/{thread_id}", post(send_message))

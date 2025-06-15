@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, createContext, type ReactNode, useEffect, type SetStateAction, type Dispatch } from 'react';
+import { useState, createContext, type ReactNode, useEffect, type SetStateAction, type Dispatch, useRef } from 'react';
 import cookie from "cookie"
 import { jwtDecode, type JwtPayload } from 'jwt-decode';
 
@@ -28,8 +28,6 @@ export type UserInfo = {
 
 export const getUserInfoFromJWT = (jwt: string) => {
     let parsed = jwtDecode(jwt)
-
-    console.log(parsed)
 
     return {
         id: (parsed as any).id,
